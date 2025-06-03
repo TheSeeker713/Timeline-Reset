@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timeline Reset</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyberBlue: '#0ff0fc',
+                        darkPurple: '#1a0639',
+                        matrixGreen: '#00ff41',
+                        hologramPink: '#ff00ff',
+                        noirGray: '#121212',
+                    },
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        rajdhani: ['Rajdhani', 'sans-serif'],
+                        tech: ['Share Tech Mono', 'monospace'],
+                    },
+                    boxShadow: {
+                        hologram: '0 0 15px #0ff0fc, 0 0 30px #ff00ff',
+                        timeline: '0 0 25px rgba(255, 0, 255, 0.6), 0 0 50px rgba(0, 255, 65, 0.4)',
+                    },
+                    animation: {
+                        'hologram-pulse': 'hologramPulse 3s infinite',
+                        'hologram-float': 'hologramFloat 15s infinite linear',
+                        flicker: 'flicker 8s infinite alternate',
+                    },
+                    keyframes: {
+                        hologramPulse: {
+                            '0%, 100%': { boxShadow: '0 0 15px #0ff0fc, 0 0 30px #ff00ff' },
+                            '50%': { boxShadow: '0 0 30px #0ff0fc, 0 0 60px #ff00ff' }
+                        },
+                        hologramFloat: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-25px)' }
+                        },
+                        flicker: {
+                            '0%, 19%, 21%, 23%, 25%, 54%, 56%, 100%': { opacity: 1 },
+                            '20%, 24%, 55%': { opacity: 0.2 }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #020007;
+            background-image: radial-gradient(circle at 10% 20%, rgba(26, 6, 57, 0.8) 0%, transparent 25%), 
+                              radial-gradient(circle at 90% 80%, rgba(58, 12, 97, 0.7) 0%, transparent 30%),
+                              url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h50v50H0z' fill='%23000' fill-opacity='0.04'/%3E%3C/svg%3E");
+            color: #e5e5e5;
+            font-family: 'Rajdhani', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                linear-gradient(rgba(0, 255, 65, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 65, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.04;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .holo-gradient-border {
+            border: 1px solid transparent;
+            background-clip: padding-box;
+            border-radius: 0.5rem;
+            position: relative;
+        }
+        
+        .holo-gradient-border::after {
+            position: absolute;
+            top: -1px;
+            bottom: -1px;
+            left: -1px;
+            right: -1px;
+            background: linear-gradient(45deg, #ff00ff, #00ffcc, #0ff0fc, #ff00ff, #00ffcc);
+            content: '';
+            z-index: -1;
+            border-radius: 0.5rem;
+            animation: gradient-border 5s linear infinite;
+            background-size: 400% 400%;
+        }
+        
+        @keyframes gradient-border {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        .timeline-message {
+            text-shadow: 
+                0 0 5px rgba(0, 255, 65, 0.7),
+                0 0 10px rgba(255, 0, 255, 0.5),
+                0 0 15px rgba(0, 255, 65, 0.3);
+            letter-spacing: -0.025em;
+            position: relative;
+        }
+        
+        .timeline-message::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, rgba(255,0,255,0) 0%, rgba(255,0,255,1) 50%, rgba(255,0,255,0) 100%);
+            filter: blur(2px);
+            animation: timeline-glow 3s infinite;
+        }
+        
+        @keyframes timeline-glow {
+            0% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+            100% { opacity: 0.3; }
+        }
+        
+        .glitch {
+            position: relative;
+        }
+        
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .glitch::before {
+            left: -2px;
+            text-shadow: 2px 0 #000,   /* Electric blue highlight */
+               			 4px 2px #262265; 
+            clip: rect(24px, 550px, 90px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+        
+        .glitch::after {
+            left: 2px;
+            text-shadow: -2px 0 #331f53;
+            clip: rect(85px, 550px, 140px, 0);
+            animation: glitch-anim2 2s infinite linear alternate;
+        }
+        
+        @keyframes glitch-anim {
+            0% { clip: rect(65px, 9999px, 100px, 0); }
+            4% { clip: rect(74px, 9999px, 48px, 0); }
+            8% { clip: rect(15px, 9999px, 59px, 0); }
+            12% { clip: rect(23px, 9999px, 4px, 0); }
+            16% { clip: rect(90px, 9999px, 49px, 0); }
+            20% { clip: rect(95px, 9999px, 21px, 0); }
+            24% { clip: rect(45px, 9999px, 96px, 0); }
+            28% { clip: rect(13px, 9999px, 65px, 0); }
+            100% { clip: rect(17px, 9999px, 32px, 0); }
+        }
+        
+        @keyframes glitch-anim2 {
+            0% { clip: rect(30px, 9999px, 36px, 0); }
+            5% { clip: rect(87px, 9999px, 94px, 0); }
+            10% { clip: rect(16px, 9999px, 82px, 0); }
+            15% { clip: rect(56px, 9999px, 77px, 0); }
+            20% { clip: rect(71px, 9999px, 36px, 0); }
+            25% { clip: rect(17px, 9999px, 63px, 0); }
+            100% { clip: rect(77px, 9999px, 52px, 0); }
+        }
+        
+        .countdown-box {
+            perspective: 500px;
+        }
+        
+        .countdown-inner {
+            transform-style: preserve-3d;
+            position: relative;
+            transition: transform 0.5s;
+            animation: hologram-float 15s infinite;
+        }
+        
+        .countdown-label {
+            position: absolute;
+            bottom: -25px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.6);
+            letter-spacing: 1px;
+        }
+        
+        .countdown-shadow {
+            position: absolute;
+            bottom: -20px;
+            left: 5%;
+            width: 90%;
+            height: 20px;
+            background: rgba(0,255,65,0.3);
+            border-radius: 50%;
+            filter: blur(10px);
+            animation: shadow-pulse 3s infinite;
+        }
+        
+        @keyframes shadow-pulse {
+            0%, 100% { opacity: 0.4; transform: scale(0.95); }
+            50% { opacity: 0.2; transform: scale(1.05); }
+        }
+        
+        .matrix-drip {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, #00ff41, transparent);
+            animation: drip 4s linear infinite;
+            filter: blur(1px);
+            z-index: -1;
+        }
+        
+        @keyframes drip {
+            0% { transform: translateY(-100%); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(100%); opacity: 0; }
+        }
+        
+        .cyber-line {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #0ff0fc, #ff00ff, transparent);
+            margin: 1rem 0;
+            filter: blur(1px);
+        }
+        
+        .footer-social {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-social:hover {
+            background: rgba(0,255,65,0.3);
+            box-shadow: 0 0 15px rgba(0,255,65,0.5);
+        }
+        
+        .footer-social::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff00ff, #00ffcc, #0ff0fc, #ff00ff);
+            z-index: -1;
+            animation: gradient-border 4s linear infinite;
+            background-size: 400% 400%;
+            filter: blur(2px);
+        }
+        
+        .scanner-light {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #00ffcc, transparent);
+            box-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+            animation: scanner-anim 4s linear infinite;
+        }
+        
+        @keyframes scanner-anim {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+
+        .metal-stone-text {
+  background: linear-gradient(90deg, #cfcfcf 10%, #a0a0a0 40%, #676767 60%, #e6e6e6 90%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  text-shadow:
+    0 2px 4px #0008,
+    0 6px 12px #4447,
+    0 0.5px 0.5px #aaa,
+    0 -1px 1px #3335,
+    2px 2px 8px #8883;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  filter: contrast(1.2) brightness(1.05);
+}
+
+    </style>
+</head>
+<body class="relative flex flex-col min-h-screen bg-noirGray">
+    <!-- Background elements -->
+    <div class="cyber-grid"></div>
+    <div class="noise-overlay"></div>
+    <div class="matrix-drip" style="left: 10%"></div>
+    <div class="matrix-drip" style="left: 25%"></div>
+    <div class="matrix-drip" style="left: 50%"></div>
+    <div class="matrix-drip" style="left: 75%"></div>
+    <div class="matrix-drip" style="left: 90%"></div>
+    
+    <!-- Header -->
+    <header class="py-4 px-6 flex justify-between items-center">
+    <div class="flex items-center">
+        <div class="w-3 h-3 bg-cyberBlue rounded-full mr-3 animate-pulse"></div>
+        <h1 class="text-xl font-orbitron text-cyberBlue font-bold tracking-wider select-none">
+            P<sup class="text-xs relative top-[-0.5em]">3</sup> PARADIGM EVOLUTION PRODUCTIONS
+        </h1>
+    </div>
+    <nav>
+        <ul class="flex space-x-6">
+            <li>
+                <a href="#" class="font-rajdhani text-gray-300 hover:text-cyberBlue transition tracking-widest select-none">
+                    𝙳4⊥λ[09⌖
+                </a>
+            </li>
+            <li>
+                <a href="#" class="font-rajdhani text-gray-300 hover:text-cyberBlue transition tracking-widest select-none">
+                    ₮Σ₡#₦∅₥λ₦₡Σ₹
+                </a>
+            </li>
+            <li>
+                <a href="#" class="font-rajdhani text-gray-300 hover:text-cyberBlue transition tracking-widest select-none">
+                    β!Ø₡}-[!₽$_
+                </a>
+            </li>
+            <li>
+                <a href="#" class="font-rajdhani text-gray-300 hover:text-cyberBlue transition tracking-widest select-none">
+                    GЯ!Đ λ₵₵Σ$∑
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+    
+    <div class="scanner-light"></div>
+    
+    <!-- Main Content -->
+    <main class="flex-grow flex flex-col items-center justify-center px-4 py-10 relative">
+        <div class="relative z-10 w-full max-w-4xl text-center">
+            <!-- Timeline Reset Message -->
+            <div class="holo-gradient-border mb-16">
+                <div class="py-10 px-8 bg-darkPurple/80 backdrop-blur-sm">
+                    <h2 class="text-4xl md:text-6xl font-orbitron font-bold tracking-wider text-matrixGreen flicker">
+                        <span class="glitch metal-stone-text" data-text="[timeline)_r3s3ts]">[timeline)_r3s3ts]</span>
+                    </h2>
+                    <p class="mt-6 text-gray-300 font-rajdhani max-w-2xl mx-auto text-lg">
+                        Temporal convergence approaching. Prepare for system-wide reinitialization. Chronometric displacement detected in primary sequence.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Countdown -->
+            <div class="mt-16">
+                <h3 class="text-xl md:text-2xl font-orbitron text-cyberBlue mb-10 tracking-widest">
+                    TEMPORAL RESET SEQUENCE: ACTIVATED
+                </h3>
+                
+                <div class="flex justify-center space-x-4 md:space-x-8">
+                    <!-- Days -->
+                    <div class="countdown-box">
+                        <div class="countdown-inner">
+                            <div class="w-20 h-24 flex items-center justify-center bg-darkPurple/60 backdrop-blur-sm border border-cyberBlue/40 rounded-lg timeline-message shadow-timeline">
+                                <span id="days" class="text-4xl font-orbitron text-white">00</span>
+                            </div>
+                            <div class="countdown-shadow"></div>
+                        </div>
+                        <div class="countdown-label">DAYS</div>
+                    </div>
+                    
+                    <!-- Hours -->
+                    <div class="countdown-box">
+                        <div class="countdown-inner">
+                            <div class="w-20 h-24 flex items-center justify-center bg-darkPurple/60 backdrop-blur-sm border border-cyberBlue/40 rounded-lg timeline-message shadow-timeline">
+                                <span id="hours" class="text-4xl font-orbitron text-white">00</span>
+                            </div>
+                            <div class="countdown-shadow"></div>
+                        </div>
+                        <div class="countdown-label">HOURS</div>
+                    </div>
+                    
+                    <!-- Minutes -->
+                    <div class="countdown-box">
+                        <div class="countdown-inner">
+                            <div class="w-20 h-24 flex items-center justify-center bg-darkPurple/60 backdrop-blur-sm border border-cyberBlue/40 rounded-lg timeline-message shadow-timeline">
+                                <span id="minutes" class="text-4xl font-orbitron text-white">00</span>
+                            </div>
+                            <div class="countdown-shadow"></div>
+                        </div>
+                        <div class="countdown-label">MINUTES</div>
+                    </div>
+                    
+                    <!-- Seconds -->
+                    <div class="countdown-box">
+                        <div class="countdown-inner">
+                            <div class="w-20 h-24 flex items-center justify-center bg-darkPurple/60 backdrop-blur-sm border border-cyberBlue/40 rounded-lg timeline-message shadow-timeline">
+                                <span id="seconds" class="text-4xl font-orbitron text-white">00</span>
+                            </div>
+                            <div class="countdown-shadow"></div>
+                        </div>
+                        <div class="countdown-label">SECONDS</div>
+                    </div>
+                </div>
+                
+                <div class="mt-16 flex justify-center">
+                    <div class="w-16 h-1 bg-hologramPink rounded-full"></div>
+                </div>
+                
+                <div class="mt-8">
+                    <p class="font-rajdhani text-gray-400 text-sm tracking-wider">
+                        RESET INITIATION: 2025/11/11 11:11 PST
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="py-6 px-4 border-t border-gray-800/30 mt-auto">
+        <div class="flex flex-col md:flex-row items-center justify-between">
+            <div class="flex items-center mb-4 md:mb-0">
+                <div class="h-3 w-3 bg-cyberBlue rounded-full mr-2 animate-pulse"></div>
+                <p class="text-gray-400 font-rajdhani">
+                    <span class="text-sm font-bold">p</span><sup class="text-xs relative top-[-0.5em]">3</sup> PARADIGM EVOLUTION PRODUCTIONS 2012-2025
+                </p>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <p class="text-xs text-gray-500 tracking-wide uppercase">
+                    All Rights Reserved. Chronometric Distortions Detected.
+                </p>
+            </div>
+            
+            <div class="flex space-x-3 mt-4 md:mt-0">
+                <a href="#" class="footer-social">
+                    <i class="fab fa-github text-gray-300"></i>
+                </a>
+                <a href="#" class="footer-social">
+                    <i class="fab fa-twitter text-gray-300"></i>
+                </a>
+                <a href="#" class="footer-social">
+                    <i class="fab fa-instagram text-gray-300"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script>
+        // Countdown timer
+        function updateCountdown() {
+            const targetDate = new Date('November 11, 2025 11:11:00 PST');
+            const now = new Date();
+            const difference = targetDate - now;
+            
+            if (difference <= 0) {
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+                return;
+            }
+            
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            
+            // Glitch effect for seconds
+            if(seconds % 5 === 0) {
+                document.getElementById('seconds').classList.add('text-hologramPink');
+                setTimeout(() => {
+                    document.getElementById('seconds').classList.remove('text-hologramPink');
+                }, 300);
+            }
+        }
+        
+        // Initialize countdown and update every second
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+        
+        // Matrix Drip Effect - Create new drips periodically
+        setInterval(() => {
+            const newDrip = document.createElement('div');
+            newDrip.className = 'matrix-drip';
+            newDrip.style.left = `${Math.random() * 100}%`;
+            document.body.appendChild(newDrip);
+            
+            // Remove after animation completes
+            setTimeout(() => {
+                if(document.body.contains(newDrip)) {
+                    document.body.removeChild(newDrip);
+                }
+            }, 5000);
+        }, 800);
+        
+        // Random glitch effects
+        setInterval(() => {
+            const elements = document.querySelectorAll('.countdown-inner, .timeline-message');
+            if(elements.length) {
+                const element = elements[Math.floor(Math.random() * elements.length)];
+                element.classList.add('opacity-50');
+                element.style.transform = 'translateX(10px)';
+                
+                setTimeout(() => {
+                    element.classList.remove('opacity-50');
+                    element.style.transform = '';
+                }, 200);
+            }
+        }, 3000);
+        
+        // Interactive mouse effects
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            const elements = document.querySelectorAll('.countdown-inner');
+            elements.forEach((el, index) => {
+                const rotateX = y * 20 - 10;
+                const rotateY = x * 20 - 10;
+                const delay = index * 100;
+                el.style.transition = `transform ${delay}ms ease`;
+                el.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+        });
+    </script>
+    <audio id="reset-audio" src="assets/reset.mp3" autoplay loop></audio>
+
+</body>
+</html>
