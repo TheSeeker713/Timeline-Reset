@@ -1,0 +1,467 @@
+/**
+ * TV Screen Effect
+ * Simulates old CRT television with scan lines, static, and RGB glitching
+ */
+
+/* Main TV overlay container */
+.tv-screen-effect {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+/* Horizontal scan lines (classic CRT effect) */
+.tv-scanlines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15) 0px,
+    rgba(0, 0, 0, 0) 1px,
+    rgba(0, 0, 0, 0) 2px,
+    rgba(0, 0, 0, 0.15) 3px
+  );
+  animation: scanline-drift 8s linear infinite;
+  opacity: 0.5;
+}
+
+@keyframes scanline-drift {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(4px); }
+}
+
+/* RGB color split glitch lines (raining down) */
+.tv-glitch-rain {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 200%;
+}
+
+.glitch-line {
+  position: absolute;
+  width: 2px;
+  height: 100%;
+  opacity: 0;
+  mix-blend-mode: screen;
+}
+
+/* Individual glitch line animations */
+.glitch-line:nth-child(1) {
+  left: 10%;
+  background: linear-gradient(180deg, 
+    transparent 0%, 
+    #ff0000 20%, 
+    transparent 40%,
+    #00ff00 60%,
+    transparent 80%
+  );
+  animation: rain-down 3s linear infinite;
+  animation-delay: 0s;
+}
+
+.glitch-line:nth-child(2) {
+  left: 25%;
+  background: linear-gradient(180deg, 
+    transparent 0%, 
+    #0000ff 20%, 
+    transparent 40%,
+    #ff00ff 60%,
+    transparent 80%
+  );
+  animation: rain-down 4s linear infinite;
+  animation-delay: 0.5s;
+}
+
+.glitch-line:nth-child(3) {
+  left: 40%;
+  background: linear-gradient(180deg, 
+    transparent 0%, 
+    #00ffff 20%, 
+    transparent 40%,
+    #ff0000 60%,
+    transparent 80%
+  );
+  animation: rain-down 3.5s linear infinite;
+  animation-delay: 1s;
+}
+
+.glitch-line:nth-child(4) {
+  left: 60%;
+  background: linear-gradient(180deg, 
+    transparent 0%, 
+    #00ff00 20%, 
+    transparent 40%,
+    #0000ff 60%,
+    transparent 80%
+  );
+  animation: rain-down 4.5s linear infinite;
+  animation-delay: 1.5s;
+}
+
+.glitch-line:nth-child(5) {
+  left: 75%;
+  background: linear-gradient(180deg, 
+    transparent 0%, 
+    #ff00ff 20%, 
+    transparent 40%,
+    #00ffff 60%,
+    transparent 80%
+  );
+  animation: rain-down 3.2s linear infinite;
+  animation-delay: 2s;
+}
+
+.glitch-line:nth-child(6) {
+  left: 90%;
+  background: linear-gradient(180deg, 
+    transparent 0%, 
+    #ffff00 20%, 
+    transparent 40%,
+    #ff0000 60%,
+    transparent 80%
+  );
+  animation: rain-down 4.8s linear infinite;
+  animation-delay: 0.8s;
+}
+
+/* Raining down animation */
+@keyframes rain-down {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+/* Horizontal glitch lines (left to right) */
+.tv-glitch-horizontal {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 200%;
+  height: 100%;
+}
+
+.glitch-horizontal {
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  opacity: 0;
+  mix-blend-mode: screen;
+}
+
+.glitch-horizontal:nth-child(1) {
+  top: 15%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    #ff0000 20%, 
+    transparent 40%,
+    #00ff00 60%,
+    transparent 80%
+  );
+  animation: rain-right 5s linear infinite;
+  animation-delay: 0s;
+}
+
+.glitch-horizontal:nth-child(2) {
+  top: 35%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    #0000ff 20%, 
+    transparent 40%,
+    #ff00ff 60%,
+    transparent 80%
+  );
+  animation: rain-left 4.5s linear infinite;
+  animation-delay: 0.7s;
+}
+
+.glitch-horizontal:nth-child(3) {
+  top: 55%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    #00ffff 20%, 
+    transparent 40%,
+    #ffff00 60%,
+    transparent 80%
+  );
+  animation: rain-right 4.2s linear infinite;
+  animation-delay: 1.4s;
+}
+
+.glitch-horizontal:nth-child(4) {
+  top: 75%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    #ff00ff 20%, 
+    transparent 40%,
+    #00ff00 60%,
+    transparent 80%
+  );
+  animation: rain-left 5.5s linear infinite;
+  animation-delay: 2.1s;
+}
+
+.glitch-horizontal:nth-child(5) {
+  top: 90%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    #ffff00 20%, 
+    transparent 40%,
+    #ff0000 60%,
+    transparent 80%
+  );
+  animation: rain-right 3.8s linear infinite;
+  animation-delay: 2.8s;
+}
+
+/* Horizontal animations */
+@keyframes rain-right {
+  0% {
+    transform: translateX(-50%);
+    opacity: 0;
+    height: 1px;
+  }
+  10% {
+    opacity: 0.7;
+    height: 2px;
+  }
+  50% {
+    height: 1px;
+  }
+  90% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateX(50%);
+    opacity: 0;
+    height: 1px;
+  }
+}
+
+@keyframes rain-left {
+  0% {
+    transform: translateX(50%);
+    opacity: 0;
+    height: 1px;
+  }
+  10% {
+    opacity: 0.7;
+    height: 2px;
+  }
+  50% {
+    height: 1px;
+  }
+  90% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateX(-50%);
+    opacity: 0;
+    height: 1px;
+  }
+}
+
+/* Raining up animation */
+.tv-glitch-up {
+  position: absolute;
+  bottom: -100%;
+  left: 0;
+  width: 100%;
+  height: 200%;
+}
+
+.glitch-up {
+  position: absolute;
+  width: 1px;
+  height: 100%;
+  opacity: 0;
+  mix-blend-mode: screen;
+}
+
+.glitch-up:nth-child(1) {
+  left: 15%;
+  background: linear-gradient(0deg, 
+    transparent 0%, 
+    #00ffff 20%, 
+    transparent 40%,
+    #ff0000 60%,
+    transparent 80%
+  );
+  animation: rain-up 4.5s linear infinite;
+  animation-delay: 0.3s;
+}
+
+.glitch-up:nth-child(2) {
+  left: 45%;
+  background: linear-gradient(0deg, 
+    transparent 0%, 
+    #ff00ff 20%, 
+    transparent 40%,
+    #00ff00 60%,
+    transparent 80%
+  );
+  animation: rain-up 5s linear infinite;
+  animation-delay: 1.2s;
+}
+
+.glitch-up:nth-child(3) {
+  left: 70%;
+  background: linear-gradient(0deg, 
+    transparent 0%, 
+    #ffff00 20%, 
+    transparent 40%,
+    #0000ff 60%,
+    transparent 80%
+  );
+  animation: rain-up 4.8s linear infinite;
+  animation-delay: 2.1s;
+}
+
+@keyframes rain-up {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.5;
+  }
+  90% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+/* RGB color split effect */
+.tv-rgb-split {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  animation: rgb-split-glitch 0.3s infinite;
+}
+
+@keyframes rgb-split-glitch {
+  0%, 90%, 100% {
+    text-shadow: none;
+    filter: none;
+  }
+  92% {
+    filter: 
+      drop-shadow(2px 0 0 rgba(255, 0, 0, 0.5))
+      drop-shadow(-2px 0 0 rgba(0, 255, 255, 0.5));
+  }
+  94% {
+    filter: 
+      drop-shadow(-2px 0 0 rgba(255, 0, 0, 0.5))
+      drop-shadow(2px 0 0 rgba(0, 255, 0, 0.5));
+  }
+  96% {
+    filter: 
+      drop-shadow(1px 0 0 rgba(0, 0, 255, 0.5))
+      drop-shadow(-1px 0 0 rgba(255, 255, 0, 0.5));
+  }
+}
+
+/* Vignette effect (TV screen curvature) */
+.tv-vignette {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    transparent 60%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  pointer-events: none;
+}
+
+/* Random static noise */
+.tv-static {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+  animation: static-noise 0.2s steps(10) infinite;
+  opacity: 0.15;
+}
+
+@keyframes static-noise {
+  0% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -5%); }
+  20% { transform: translate(-10%, 5%); }
+  30% { transform: translate(5%, -10%); }
+  40% { transform: translate(-5%, 15%); }
+  50% { transform: translate(-10%, 5%); }
+  60% { transform: translate(15%, 0); }
+  70% { transform: translate(0, 10%); }
+  80% { transform: translate(-15%, 0); }
+  90% { transform: translate(10%, 5%); }
+  100% { transform: translate(5%, 0); }
+}
+
+/* Flickering brightness */
+.tv-flicker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.02);
+  animation: flicker 0.15s infinite;
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  41.99% { opacity: 1; }
+  42% { opacity: 0.8; }
+  43% { opacity: 1; }
+  45.99% { opacity: 1; }
+  46% { opacity: 0.7; }
+  47% { opacity: 1; }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .tv-scanlines,
+  .glitch-line,
+  .glitch-horizontal,
+  .glitch-up,
+  .tv-rgb-split,
+  .tv-static,
+  .tv-flicker {
+    animation: none !important;
+  }
+  
+  .tv-screen-effect {
+    opacity: 0.3;
+  }
+}

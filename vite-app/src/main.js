@@ -7,6 +7,7 @@
 import './styles/tailwind.css';
 import './styles/glitch.css';
 import './styles/portal.css';
+import './styles/tv-effect.css';
 
 // Import components
 import { setupGlitch, GlitchFX } from './components/glitch/index.js';

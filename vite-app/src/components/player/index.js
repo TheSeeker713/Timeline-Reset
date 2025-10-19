@@ -68,9 +68,10 @@ export function initPlayer({ audioEl, playBtnEl, onEnded = null }) {
   console.log('✅ Audio ended event listener attached');
   console.log('  onEnded callback will be called:', !!onEndedCallback);
   
-  // iOS audio unlock
-  document.addEventListener('click', unlockAudio, { once: true });
-  document.addEventListener('touchstart', unlockAudio, { once: true });
+  // iOS audio unlock - removed as it interferes with play button
+  // Modern browsers handle this automatically on user gesture
+  // document.addEventListener('click', unlockAudio, { once: true });
+  // document.addEventListener('touchstart', unlockAudio, { once: true });
   
   // Set initial ARIA attributes
   playButton.setAttribute('aria-pressed', hasPlayed ? 'true' : 'false');
@@ -159,6 +160,17 @@ function playAudio() {
   audioElement.play()
     .then(() => {
       console.log('✅ Audio play() promise resolved');
+      
+      // DEBUG: Check audio state after play
+      console.log('🔍 Audio state after play():');
+      console.log('  paused:', audioElement.paused);
+      console.log('  currentTime:', audioElement.currentTime);
+      console.log('  duration:', audioElement.duration);
+      console.log('  volume:', audioElement.volume);
+      console.log('  muted:', audioElement.muted);
+      console.log('  readyState:', audioElement.readyState);
+      console.log('  ended:', audioElement.ended);
+      
       isPlaying = true;
       hasPlayed = true;
       
