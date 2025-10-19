@@ -63,9 +63,11 @@ export function initPortal({ containerEl, targetUtc: target, nowFn: nowFunc = nu
   // Input change handler
   gateInput.addEventListener('input', handleInputChange);
   
-  console.log('🌀 Portal gate initialized');
-  console.log('Target:', targetUtc.toISOString());
-  console.log('Rejection phrases loaded:', REJECTION_PHRASES.length);
+  if (import.meta.env.DEV) {
+    console.info('🌀 Portal gate initialized');
+    console.info('Target:', targetUtc.toISOString());
+    console.info('Rejection phrases loaded:', REJECTION_PHRASES.length);
+  }
   
   return GateAPI;
 }
@@ -92,7 +94,9 @@ export function showPortal() {
     }
   }, 600);
   
-  console.log('🌀 Portal shown and input focused');
+  if (import.meta.env.DEV) {
+    console.info('🌀 Portal shown and input focused');
+  }
 }
 
 /**
@@ -153,7 +157,9 @@ function showRejectionMessage() {
   gateError.classList.remove('hidden');
   gateSuccess.classList.add('hidden');
   
-  console.log('⛔ Gate rejected:', randomPhrase);
+  if (import.meta.env.DEV) {
+    console.info('⛔ Gate rejected:', randomPhrase);
+  }
 }
 
 /**
@@ -171,11 +177,13 @@ function showSuccessMessage() {
     submitBtn.disabled = true;
   }
   
-  console.log('✅ Temporal lock disengaged');
-  
-  // Log input value
-  const inputValue = gateInput.value.trim();
-  console.log('Gate accepted. Input:', inputValue || 'none');
+  if (import.meta.env.DEV) {
+    console.info('✅ Temporal lock disengaged');
+    
+    // Log input value
+    const inputValue = gateInput.value.trim();
+    console.info('Gate accepted. Input:', inputValue || 'none');
+  }
 }
 
 /**

@@ -50,7 +50,9 @@ export function initPlayer({ audioEl, playBtnEl, onEnded = null }) {
   playButton.setAttribute('role', 'button');
   playButton.setAttribute('tabindex', '0');
   
-  console.log('🔊 Audio player initialized with accessibility');
+  if (import.meta.env.DEV) {
+    console.info('🔊 Audio player initialized with accessibility');
+  }
   
   return AudioAPI;
 }
@@ -127,7 +129,9 @@ function playAudio() {
       // Announce to screen readers
       announce('Audio is now playing');
       
-      console.log('▶️ Audio playing');
+      if (import.meta.env.DEV) {
+        console.info('▶️ Audio playing');
+      }
     })
     .catch(err => {
       console.error('Audio play failed:', err);
@@ -141,7 +145,9 @@ function playAudio() {
 function handleAudioEnded() {
   isPlaying = false;
   
-  console.log('⏹️ Audio ended');
+  if (import.meta.env.DEV) {
+    console.info('⏹️ Audio ended');
+  }
   
   // Announce to screen readers
   announce('Audio has finished playing. Portal is now available.');
@@ -174,7 +180,9 @@ function revealPortal() {
     block: 'center'
   });
   
-  console.log('🌀 Portal revealed');
+  if (import.meta.env.DEV) {
+    console.info('🌀 Portal revealed');
+  }
 }
 
 /**
@@ -189,7 +197,9 @@ function unlockAudio() {
       audioElement.pause();
       audioElement.currentTime = 0;
       isUnlocked = true;
-      console.log('🔓 Audio unlocked (iOS)');
+      if (import.meta.env.DEV) {
+        console.info('🔓 Audio unlocked (iOS)');
+      }
     })
     .catch(() => {
       // Ignore unlock errors

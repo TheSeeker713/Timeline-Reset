@@ -14,6 +14,9 @@ import { initCountdown, CountdownAPI } from './components/countdown/index.js';
 import { initPlayer, AudioAPI } from './components/player/index.js';
 import { initPortal, showPortal, GateAPI } from './components/portal/index.js';
 
+// Import dev controls (only loads in dev mode)
+import { initDevControls } from './utils/devControls.js';
+
 // Target date: 2025-11-11 11:11 AM America/Denver (MST = UTC-7)
 // MST is UTC-7, so 11:11 AM MST = 18:11 UTC
 const TARGET = new Date('2025-11-11T18:11:00Z');
@@ -22,9 +25,11 @@ const TARGET = new Date('2025-11-11T18:11:00Z');
  * Boot sequence
  */
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('🚀 Timeline Reset initializing...');
-  console.log('Target:', TARGET.toISOString());
-  console.log('Target (Local):', TARGET.toLocaleString());
+  if (import.meta.env.DEV) {
+    console.log('🚀 Timeline Reset initializing...');
+    console.log('Target:', TARGET.toISOString());
+    console.log('Target (Local):', TARGET.toLocaleString());
+  }
   
   // a) Mount background + glitch (low level 0.12)
   setupGlitch();
@@ -61,7 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
     nowFn: () => window.__MOCK_DATE__ || new Date()
   });
   
-  console.log('✅ Timeline Reset initialized');
+  if (import.meta.env.DEV) {
+    console.log('✅ Timeline Reset initialized');
+  }
   
   // Expose APIs for testing
   window.GlitchFX = GlitchFX;
@@ -69,18 +76,25 @@ document.addEventListener('DOMContentLoaded', () => {
   window.__AUDIO_API__ = AudioAPI;
   window.__GATE_API__ = GateAPI;
   
-  console.log('📡 Test APIs exposed:');
-  console.log('  - GlitchFX (setLevel, getLevel, stepTo)');
-  console.log('  - __COUNTDOWN_API__ (getTarget, setMockDate, etc.)');
-  console.log('  - __AUDIO_API__ (play, isPlaying, revealPortal)');
-  console.log('  - __GATE_API__ (showPortal, isTargetReached, etc.)');
+  if (import.meta.env.DEV) {
+    console.log('📡 Test APIs exposed:');
+    console.log('  - GlitchFX (setLevel, getLevel, stepTo)');
+    console.log('  - __COUNTDOWN_API__ (getTarget, setMockDate, etc.)');
+    console.log('  - __AUDIO_API__ (play, isPlaying, revealPortal)');
+    console.log('  - __GATE_API__ (showPortal, isTargetReached, etc.)');
+    
+    // Initialize dev controls overlay
+    initDevControls();
+  }
 });
 
 /**
  * e) At T-0, trigger full glitch takeover and replace countdown text
  */
 function handleTZero() {
-  console.log('🚨 T-0 EVENT: Full glitch takeover');
+  if (import.meta.env.DEV) {
+    console.info('🚨 T-0 EVENT: Full glitch takeover');
+  }
   
   // Full glitch intensity
   GlitchFX.setLevel(1.0);

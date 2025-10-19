@@ -23,7 +23,9 @@ export function setupGlitch() {
   glitchLayer.classList.add('active');
   setLevel(0.12);
   
-  console.log('✨ GlitchFX mounted and initialized');
+  if (import.meta.env.DEV) {
+    console.info('✨ GlitchFX mounted and initialized');
+  }
   
   return GlitchFX;
 }

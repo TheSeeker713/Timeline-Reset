@@ -41,8 +41,10 @@ export function initCountdown({ targetUtc: target, onTick = null, onZero = null 
     updateCountdown();
   }, 1000);
   
-  console.log('⏱️ Countdown initialized');
-  console.log('Target:', targetUtc.toISOString());
+  if (import.meta.env.DEV) {
+    console.info('⏱️ Countdown initialized');
+    console.info('Target:', targetUtc.toISOString());
+  }
   
   return CountdownAPI;
 }
@@ -163,7 +165,9 @@ function handleZeroReached() {
     message.classList.add('glitch-text');
   }
   
-  console.log('🚨 TARGET REACHED - T-0 EVENT');
+  if (import.meta.env.DEV) {
+    console.info('🚨 TARGET REACHED - T-0 EVENT');
+  }
   
   // Trigger onTick with max glitch level
   if (onTickCallback) {
@@ -206,12 +210,16 @@ export const CountdownAPI = {
     const mockDate = typeof date === 'string' ? new Date(date) : date;
     window.__MOCK_DATE__ = mockDate;
     forceUpdate();
-    console.log('🕒 Mock date set:', mockDate.toISOString());
+    if (import.meta.env.DEV) {
+      console.info('🕒 Mock date set:', mockDate.toISOString());
+    }
   },
   clearMockDate: () => {
     window.__MOCK_DATE__ = null;
     forceUpdate();
-    console.log('🕒 Mock date cleared, using real time');
+    if (import.meta.env.DEV) {
+      console.info('🕒 Mock date cleared, using real time');
+    }
   },
   forceUpdate,
 };
