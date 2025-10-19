@@ -1,0 +1,64 @@
+# GitHub Actions Workflow for Cloudflare Pages Deployment
+# This workflow automatically deploys to Cloudflare Pages on push to main branch
+# Cloudflare Pages also has built-in Git integration, so this is OPTIONAL
+
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      deployments: write
+    
+    name: Build and Deploy to Cloudflare Pages
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: vite-app/package-lock.json
+      
+      - name: Install dependencies
+        working-directory: ./vite-app
+        run: npm ci
+      
+      - name: Build production bundle
+        working-directory: ./vite-app
+        run: npm run build
+      
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: timeline-reset
+          directory: vite-app/dist
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
+      
+      - name: Deploy success notification
+        if: success()
+        run: |
+          echo "✅ Deployment successful!"
+          echo "Site: https://yourdomain.com"
+      
+      - name: Deploy failure notification
+        if: failure()
+        run: |
+          echo "❌ Deployment failed!"
+          echo "Check the logs above for errors."

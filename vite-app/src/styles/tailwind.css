@@ -1,26 +1,50 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* Custom CSS variables for theme */
+:root {
+  --color-cyber-blue: #0ff0fc;
+  --color-dark-purple: #1a0639;
+  --color-matrix-green: #00ff41;
+  --color-hologram-pink: #ff00ff;
+}
 
 /* Base styles */
-@layer base {
-  body {
-    @apply bg-darkPurple text-cyberBlue font-rajdhani antialiased;
-    overflow-x: hidden;
+body {
+  background-color: var(--color-dark-purple);
+  color: var(--color-cyber-blue);
+  font-family: 'Rajdhani', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Utility classes */
+.container-custom {
+  max-width: 80rem; /* 1280px */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container-custom {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
 }
 
-/* Component layer utilities */
-@layer components {
+@media (min-width: 1024px) {
   .container-custom {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
-  
-  .text-glow {
-    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
-  }
-  
-  .border-glow {
-    box-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
-  }
+}
+
+.text-glow {
+  text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+}
+
+.border-glow {
+  box-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
 }
