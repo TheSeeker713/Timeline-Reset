@@ -1,32 +1,36 @@
 /**
  * Glitch FX Component
- * Manages the glitch vignette overlay with intensity control
+ * Manages the glitch vignette overlay with intensity control using CSS variables
  */
 
 let glitchLayer = null;
 let currentLevel = 0.0;
 
 /**
- * Initialize glitch layer
- * @param {string} elementId - ID of glitch layer element
+ * Setup and mount glitch styles
+ * Binds to #glitch-layer element
+ * @returns {Object} GlitchFX API
  */
-export function initGlitch(elementId = 'glitch-layer') {
-  glitchLayer = document.getElementById(elementId);
+export function setupGlitch() {
+  glitchLayer = document.getElementById('glitch-layer');
   
   if (!glitchLayer) {
-    console.error(`Glitch layer element #${elementId} not found`);
-    return;
+    console.error('Glitch layer element #glitch-layer not found');
+    return null;
   }
   
-  // Start with layer visible but low intensity
+  // Initialize with low intensity
   glitchLayer.classList.add('active');
-  setLevel(0.1);
+  setLevel(0.12);
   
-  console.log('✨ GlitchFX initialized');
+  console.log('✨ GlitchFX mounted and initialized');
+  
+  return GlitchFX;
 }
 
 /**
  * Set glitch intensity level
+ * Updates CSS variable --glitch-level which controls all effects
  * @param {number} level - Intensity from 0.0 to 1.0
  */
 export function setLevel(level) {
@@ -34,21 +38,27 @@ export function setLevel(level) {
   
   currentLevel = Math.max(0, Math.min(1, level));
   
-  // Update data attribute for CSS
+  // Set CSS variable for amplitude control
+  glitchLayer.style.setProperty('--glitch-level', String(currentLevel));
+  
+  // Update opacity based on level
   if (currentLevel === 0) {
     glitchLayer.style.opacity = '0';
   } else if (currentLevel < 0.3) {
+    glitchLayer.style.opacity = String(currentLevel * 1.5); // Boost visibility at low levels
+  } else {
+    glitchLayer.style.opacity = String(Math.min(currentLevel * 1.2, 1.0));
+  }
+  
+  // Update data attribute for CSS intensity tiers
+  if (currentLevel < 0.3) {
     glitchLayer.setAttribute('data-intensity', 'low');
-    glitchLayer.style.opacity = String(currentLevel);
   } else if (currentLevel < 0.6) {
     glitchLayer.setAttribute('data-intensity', 'medium');
-    glitchLayer.style.opacity = String(currentLevel);
   } else if (currentLevel < 0.9) {
     glitchLayer.setAttribute('data-intensity', 'high');
-    glitchLayer.style.opacity = String(currentLevel);
   } else {
     glitchLayer.setAttribute('data-intensity', 'extreme');
-    glitchLayer.style.opacity = '1';
   }
 }
 
@@ -95,7 +105,8 @@ export function stepTo(targetLevel, duration = 1000) {
 }
 
 /**
- * Get glitch API for global exposure
+ * Glitch FX API
+ * Exposed for external control and testing
  */
 export const GlitchFX = {
   setLevel,

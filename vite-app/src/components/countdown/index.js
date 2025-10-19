@@ -3,108 +3,146 @@
  * Displays countdown to TARGET_DATE with glitch progression
  */
 
-import { 
-  TARGET_DATE, 
-  getNow, 
-  getTimeComponents, 
-  pad, 
-  isTargetReached,
-  getDaysRemaining,
-  setMockDate as setMock,
-  clearMockDate as clearMock
-} from '../../utils/time.js';
-import { setLevel as setGlitchLevel } from '../glitch/index.js';
+import { getNow } from '../../utils/time.js';
 
 let countdownInterval = null;
+let onTickCallback = null;
 let onZeroCallback = null;
 let hasReachedZero = false;
+let targetUtc = null;
+let containerElement = null;
 
 /**
  * Initialize countdown
- * @param {string} elementId - ID of countdown container
- * @param {Function} onZero - Callback when countdown reaches zero
+ * @param {Object} options - Configuration options
+ * @param {Date} options.targetUtc - Target date/time in UTC
+ * @param {Function} options.onTick - Called every second with { level } (0-1 glitch intensity)
+ * @param {Function} options.onZero - Called when countdown reaches zero
+ * @returns {Object} API for controlling countdown
  */
-export function initCountdown(elementId = 'countdown', onZero = null) {
-  const container = document.getElementById(elementId);
+export function initCountdown({ targetUtc: target, onTick = null, onZero = null }) {
+  containerElement = document.getElementById('countdown');
   
-  if (!container) {
-    console.error(`Countdown element #${elementId} not found`);
-    return;
+  if (!containerElement) {
+    console.error('Countdown element #countdown not found');
+    return null;
   }
   
+  targetUtc = target;
+  onTickCallback = onTick;
   onZeroCallback = onZero;
+  hasReachedZero = false;
   
   // Initial update
-  updateCountdown(container);
+  updateCountdown();
   
   // Update every second
   countdownInterval = setInterval(() => {
-    updateCountdown(container);
+    updateCountdown();
   }, 1000);
   
   console.log('⏱️ Countdown initialized');
-  console.log('Target:', TARGET_DATE.toISOString());
+  console.log('Target:', targetUtc.toISOString());
+  
+  return CountdownAPI;
 }
 
 /**
  * Update countdown display and glitch intensity
- * @param {HTMLElement} container - Countdown container element
  */
-function updateCountdown(container) {
-  if (isTargetReached() && !hasReachedZero) {
-    handleZeroReached(container);
+function updateCountdown() {
+  if (!containerElement || !targetUtc) return;
+  
+  const now = getNow();
+  
+  // Check if target reached
+  if (now >= targetUtc && !hasReachedZero) {
+    handleZeroReached();
     return;
   }
   
   if (hasReachedZero) return; // Already at zero, stop updating
   
-  const { d, h, m, s } = getTimeComponents();
+  // Calculate time remaining
+  const msRemaining = targetUtc.getTime() - now.getTime();
+  const { d, h, m, s } = getTimeComponentsFromMs(msRemaining);
   
   // Update display
-  const daysEl = container.querySelector('[data-countdown="days"]');
-  const hoursEl = container.querySelector('[data-countdown="hours"]');
-  const minutesEl = container.querySelector('[data-countdown="minutes"]');
-  const secondsEl = container.querySelector('[data-countdown="seconds"]');
+  const daysEl = containerElement.querySelector('[data-countdown="days"]');
+  const hoursEl = containerElement.querySelector('[data-countdown="hours"]');
+  const minutesEl = containerElement.querySelector('[data-countdown="minutes"]');
+  const secondsEl = containerElement.querySelector('[data-countdown="seconds"]');
   
   if (daysEl) daysEl.textContent = pad(d);
   if (hoursEl) hoursEl.textContent = pad(h);
   if (minutesEl) minutesEl.textContent = pad(m);
   if (secondsEl) secondsEl.textContent = pad(s);
   
-  // Calculate and update glitch intensity
-  updateGlitchIntensity();
+  // Calculate daily glitch level and trigger onTick
+  if (onTickCallback) {
+    const glitchLevel = computeDailyGlitchLevel(msRemaining);
+    onTickCallback({ level: glitchLevel });
+  }
 }
 
 /**
- * Calculate and set glitch intensity based on days remaining
+ * Convert milliseconds to time components
+ * @param {number} ms - Milliseconds
+ * @returns {Object} { d, h, m, s }
  */
-function updateGlitchIntensity() {
-  const daysRemaining = getDaysRemaining();
-  const totalDays = 24; // Days from start to TARGET
+function getTimeComponentsFromMs(ms) {
+  let totalSeconds = Math.max(0, Math.floor(ms / 1000));
   
-  // Intensity increases from 0.10 to 1.00 over 24 days
-  // When 24 days remain: 0.10
-  // When 0 days remain: 1.00
-  let intensity;
+  const days = Math.floor(totalSeconds / 86400);
+  totalSeconds %= 86400;
+  
+  const hours = Math.floor(totalSeconds / 3600);
+  totalSeconds %= 3600;
+  
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  
+  return { d: days, h: hours, m: minutes, s: seconds };
+}
+
+/**
+ * Compute daily glitch level (0.0 to 1.0) based on time remaining
+ * Increases from 0.12 (24+ days) to 1.00 (T-0)
+ * @param {number} msRemaining - Milliseconds until target
+ * @returns {number} Glitch level (0.0 to 1.0)
+ */
+function computeDailyGlitchLevel(msRemaining) {
+  const totalDays = 24; // Days from start to TARGET
+  const daysRemaining = msRemaining / (1000 * 60 * 60 * 24);
+  
+  // Base level when far from target
+  const baseLevel = 0.12;
+  const maxLevel = 1.00;
   
   if (daysRemaining >= totalDays) {
-    intensity = 0.10;
+    return baseLevel;
   } else if (daysRemaining <= 0) {
-    intensity = 1.00;
+    return maxLevel;
   } else {
-    // Linear interpolation from 0.10 to 1.00
+    // Linear interpolation from baseLevel to maxLevel
     const progress = 1 - (daysRemaining / totalDays);
-    intensity = 0.10 + (progress * 0.90);
+    return baseLevel + (progress * (maxLevel - baseLevel));
   }
-  
-  setGlitchLevel(intensity);
 }
 
 /**
- * Handle countdown reaching zero
- * @param {HTMLElement} container - Countdown container
+ * Format number with leading zero
+ * @param {number} num - Number to pad
+ * @returns {string} Padded string
  */
-function handleZeroReached(container) {
+function pad(num) {
+  return String(num).padStart(2, '0');
+}
+
+/**
+ * Handle countdown reaching zero (T-0 event)
+ */
+function handleZeroReached() {
   hasReachedZero = true;
   
   // Stop interval
@@ -114,15 +152,12 @@ function handleZeroReached(container) {
   }
   
   // Set all to zero
-  container.querySelectorAll('[data-countdown]').forEach(el => {
+  containerElement.querySelectorAll('[data-countdown]').forEach(el => {
     el.textContent = '00';
   });
   
-  // Max glitch intensity
-  setGlitchLevel(1.0);
-  
   // Show "SIGNAL BREACHED" message
-  const message = container.querySelector('.countdown-message');
+  const message = containerElement.querySelector('.countdown-message');
   if (message) {
     message.textContent = 'SIGNAL BREACHED';
     message.classList.add('glitch-text');
@@ -130,7 +165,12 @@ function handleZeroReached(container) {
   
   console.log('🚨 TARGET REACHED - T-0 EVENT');
   
-  // Call callback
+  // Trigger onTick with max glitch level
+  if (onTickCallback) {
+    onTickCallback({ level: 1.0 });
+  }
+  
+  // Call onZero callback
   if (onZeroCallback) {
     onZeroCallback();
   }
@@ -139,26 +179,39 @@ function handleZeroReached(container) {
 /**
  * Force countdown update (useful for testing)
  */
-export function forceUpdate() {
-  const container = document.getElementById('countdown');
-  if (container) {
-    updateCountdown(container);
+function forceUpdate() {
+  if (containerElement) {
+    updateCountdown();
   }
+}
+
+/**
+ * Get days remaining until target
+ * @returns {number} Days remaining (fractional)
+ */
+function getDaysRemaining() {
+  if (!targetUtc) return 0;
+  const now = getNow();
+  const msRemaining = targetUtc.getTime() - now.getTime();
+  return msRemaining / (1000 * 60 * 60 * 24);
 }
 
 /**
  * Countdown API for testing
  */
 export const CountdownAPI = {
-  getTarget: () => TARGET_DATE,
+  getTarget: () => targetUtc,
   getDaysRemaining,
   setMockDate: (date) => {
-    setMock(date);
+    const mockDate = typeof date === 'string' ? new Date(date) : date;
+    window.__MOCK_DATE__ = mockDate;
     forceUpdate();
+    console.log('🕒 Mock date set:', mockDate.toISOString());
   },
   clearMockDate: () => {
-    clearMock();
+    window.__MOCK_DATE__ = null;
     forceUpdate();
+    console.log('🕒 Mock date cleared, using real time');
   },
   forceUpdate,
 };

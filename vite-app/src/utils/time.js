@@ -6,15 +6,13 @@
 // Target date: 2025-11-11 11:11 AM MT (18:11 UTC)
 export const TARGET_DATE = new Date('2025-11-11T18:11:00Z');
 
-// Mock date for testing (global override)
-let mockDate = null;
-
 /**
  * Get current time (real or mocked)
+ * Uses window.__MOCK_DATE__ if set, otherwise returns real time
  * @returns {Date} Current date or mock date if set
  */
 export function getNow() {
-  return mockDate || new Date();
+  return window.__MOCK_DATE__ || new Date();
 }
 
 /**
