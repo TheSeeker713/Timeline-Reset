@@ -332,6 +332,12 @@
     </style>
 </head>
 <body class="relative flex flex-col min-h-screen bg-noirGray">
+    <!-- Background Image Layer -->
+    <div id="bg" class="fixed inset-0 -z-40 bg-center bg-cover bg-no-repeat" style="background-image: url('/assets/images/glitched_background.webp');"></div>
+    
+    <!-- Glitch Overlay Layer -->
+    <div id="glitch-layer" class="pointer-events-none fixed inset-0 -z-30"></div>
+    
     <!-- Background elements -->
     <div class="cyber-grid"></div>
     <div class="noise-overlay"></div>
@@ -379,8 +385,8 @@
     <div class="scanner-light"></div>
     
     <!-- Main Content -->
-    <main class="flex-grow flex flex-col items-center justify-center px-4 py-10 relative">
-        <div class="relative z-10 w-full max-w-4xl text-center">
+    <main class="relative z-10 min-h-screen grid place-items-center px-4 py-10">
+        <div class="w-full max-w-4xl text-center space-y-8">
             <!-- Timeline Reset Message -->
             <div class="holo-gradient-border mb-16">
                 <div class="py-10 px-8 bg-darkPurple/80 backdrop-blur-sm">
@@ -394,7 +400,7 @@
             </div>
             
             <!-- Countdown -->
-            <div class="mt-16">
+            <section id="countdown" class="relative z-20">
                 <h3 class="text-xl md:text-2xl font-orbitron text-cyberBlue mb-10 tracking-widest">
                     TEMPORAL RESET SEQUENCE: ACTIVATED
                 </h3>
@@ -454,7 +460,26 @@
                         RESET INITIATION: 2025/11/11 11:11 PST
                     </p>
                 </div>
-            </div>
+            </section>
+            
+            <!-- Audio Player Section -->
+            <section id="audioPlayer" class="mt-6 flex flex-col items-center gap-3 relative z-20">
+                <button id="playBtn" 
+                        aria-label="Play audio" 
+                        role="button" 
+                        class="cursor-pointer transition-transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-cyberBlue/50 rounded-3xl">
+                    <img src="/assets/svg/play_button_glitchy.svg" 
+                         alt="Play audio button" 
+                         width="600" 
+                         height="200"
+                         class="max-w-full h-auto" />
+                </button>
+            </section>
+            
+            <!-- Portal/Gate Section (Hidden for now) -->
+            <section id="portal" class="mt-6 w-full max-w-xl hidden relative z-30">
+                <!-- Portal content will be added in later steps -->
+            </section>
         </div>
     </main>
     
@@ -572,7 +597,9 @@
             });
         });
     </script>
-    <audio id="reset-audio" src="assets/reset.mp3" autoplay loop></audio>
+    
+    <!-- Audio Element (no autoplay) -->
+    <audio id="resetAudio" src="/assets/audio/reset.mp3" preload="auto" loop></audio>
 
 </body>
 </html>
