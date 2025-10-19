@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Test</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #1a0639;
+            color: #0ff0fc;
+        }
+        button {
+            padding: 20px 40px;
+            font-size: 20px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .log {
+            margin-top: 20px;
+            padding: 10px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid #0ff0fc;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .log div {
+            margin: 5px 0;
+        }
+        .success { color: #00ff41; }
+        .error { color: #ff0000; }
+        .info { color: #0ff0fc; }
+    </style>
+</head>
+<body>
+    <h1>🎵 Audio Test Page</h1>
+    
+    <h2>Audio File Tests:</h2>
+    <button id="testFetch">1. Test File Exists (Fetch)</button>
+    <button id="testAudioLoad">2. Test Audio Load</button>
+    <button id="testPlay">3. Test Audio Play</button>
+    <button id="testFull">4. Full Integration Test</button>
+    
+    <div class="log" id="log"></div>
+    
+    <audio id="testAudio" preload="auto">
+        <source src="/assets/audio/reset.mp3" type="audio/mpeg">
+    </audio>
+    
+    <script>
+        const log = document.getElementById('log');
+        
+        function addLog(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = type;
+            div.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            log.appendChild(div);
+            log.scrollTop = log.scrollHeight;
+            console.log(message);
+        }
+        
+        // Test 1: Check if file exists
+        document.getElementById('testFetch').addEventListener('click', async () => {
+            addLog('Test 1: Checking if audio file exists...', 'info');
+            try {
+                const response = await fetch('/assets/audio/reset.mp3');
+                if (response.ok) {
+                    const blob = await response.blob();
+                    addLog(`✅ File exists! Size: ${(blob.size / 1024).toFixed(2)} KB`, 'success');
+                    addLog(`   Content-Type: ${response.headers.get('content-type')}`, 'info');
+                } else {
+                    addLog(`❌ File not found! Status: ${response.status}`, 'error');
+                }
+            } catch (err) {
+                addLog(`❌ Fetch error: ${err.message}`, 'error');
+            }
+        });
+        
+        // Test 2: Check if audio element can load
+        document.getElementById('testAudioLoad').addEventListener('click', () => {
+            addLog('Test 2: Testing audio element load...', 'info');
+            const audio = document.getElementById('testAudio');
+            
+            addLog(`   Audio element exists: ${!!audio}`, 'info');
+            addLog(`   Audio src: ${audio.querySelector('source')?.src}`, 'info');
+            addLog(`   Can play MP3: ${audio.canPlayType('audio/mpeg')}`, 'info');
+            addLog(`   Ready state: ${audio.readyState} (0-4)`, 'info');
+            addLog(`   Network state: ${audio.networkState} (0-3)`, 'info');
+            addLog(`   Paused: ${audio.paused}`, 'info');
+            addLog(`   Duration: ${audio.duration || 'Not loaded yet'}`, 'info');
+            
+            audio.addEventListener('loadeddata', () => {
+                addLog('✅ Audio data loaded!', 'success');
+                addLog(`   Duration: ${audio.duration.toFixed(2)}s`, 'success');
+            }, { once: true });
+            
+            audio.addEventListener('error', (e) => {
+                addLog(`❌ Audio load error: ${audio.error?.message}`, 'error');
+            }, { once: true });
+            
+            audio.load();
+        });
+        
+        // Test 3: Try to play audio
+        document.getElementById('testPlay').addEventListener('click', async () => {
+            addLog('Test 3: Attempting to play audio...', 'info');
+            const audio = document.getElementById('testAudio');
+            
+            try {
+                addLog('   Calling audio.play()...', 'info');
+                await audio.play();
+                addLog('✅ Audio play() succeeded!', 'success');
+                addLog(`   Currently playing: ${!audio.paused}`, 'success');
+                addLog(`   Current time: ${audio.currentTime}s`, 'info');
+                addLog(`   Volume: ${audio.volume}`, 'info');
+                
+                audio.addEventListener('ended', () => {
+                    addLog('🎵 Audio ended normally', 'success');
+                }, { once: true });
+                
+            } catch (err) {
+                addLog(`❌ Play failed: ${err.name} - ${err.message}`, 'error');
+                
+                if (err.name === 'NotAllowedError') {
+                    addLog('   → Browser blocked autoplay. User interaction required.', 'error');
+                } else if (err.name === 'NotSupportedError') {
+                    addLog('   → Audio format not supported.', 'error');
+                }
+            }
+        });
+        
+        // Test 4: Full integration test
+        document.getElementById('testFull').addEventListener('click', async () => {
+            addLog('Test 4: Full integration test...', 'info');
+            
+            // Step 1: Check file
+            addLog('   Step 1/4: Checking file...', 'info');
+            try {
+                const response = await fetch('/assets/audio/reset.mp3');
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                addLog('   ✅ File accessible', 'success');
+            } catch (err) {
+                addLog(`   ❌ File check failed: ${err.message}`, 'error');
+                return;
+            }
+            
+            // Step 2: Create fresh audio element
+            addLog('   Step 2/4: Creating audio element...', 'info');
+            const audio = new Audio('/assets/audio/reset.mp3');
+            addLog('   ✅ Audio element created', 'success');
+            
+            // Step 3: Wait for load
+            addLog('   Step 3/4: Loading audio...', 'info');
+            await new Promise((resolve, reject) => {
+                audio.addEventListener('canplay', () => {
+                    addLog('   ✅ Audio loaded and ready', 'success');
+                    resolve();
+                }, { once: true });
+                
+                audio.addEventListener('error', () => {
+                    reject(new Error(audio.error?.message || 'Unknown error'));
+                }, { once: true });
+                
+                audio.load();
+                
+                // Timeout after 5s
+                setTimeout(() => reject(new Error('Load timeout')), 5000);
+            }).catch(err => {
+                addLog(`   ❌ Load failed: ${err.message}`, 'error');
+                throw err;
+            });
+            
+            // Step 4: Play
+            addLog('   Step 4/4: Playing audio...', 'info');
+            try {
+                await audio.play();
+                addLog('   ✅ Playing successfully!', 'success');
+                addLog(`   Duration: ${audio.duration.toFixed(2)}s`, 'info');
+                addLog('', 'info');
+                addLog('🎉 ALL TESTS PASSED! Audio is working!', 'success');
+            } catch (err) {
+                addLog(`   ❌ Play failed: ${err.message}`, 'error');
+            }
+        });
+        
+        // Auto-run file check on load
+        addLog('🚀 Audio Test Page Loaded', 'success');
+        addLog('Click buttons above to run tests', 'info');
+        addLog('', 'info');
+    </script>
+</body>
+</html>

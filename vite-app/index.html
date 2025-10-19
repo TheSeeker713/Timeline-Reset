@@ -30,42 +30,42 @@
     <main class="relative z-10">
       <!-- Countdown Section -->
       <section id="countdown" class="min-h-screen flex flex-col items-center justify-center px-4">
-        <h1 class="text-4xl md:text-6xl font-black text-glow mb-8 text-center" style="font-family: 'Orbitron', sans-serif; color: var(--color-cyber-blue);">
+        <h1 class="text-4xl md:text-6xl font-black gradient-fire-glitch mb-8 text-center" style="font-family: 'Orbitron', sans-serif;">
           TIMELINE RESET
         </h1>
         
         <div class="grid grid-cols-4 gap-4 md:gap-8 mb-8">
           <!-- Days -->
           <div class="text-center">
-            <div class="text-5xl md:text-7xl font-mono font-bold text-cyberBlue text-glow" data-countdown="days">00</div>
-            <div class="text-sm md:text-base font-rajdhani uppercase text-cyberBlue/70 mt-2">Days</div>
+            <div class="text-5xl md:text-7xl font-mono font-bold text-glow-glitch" style="color: var(--color-amber);" data-countdown="days">00</div>
+            <div class="text-sm md:text-base font-rajdhani uppercase mt-2" style="color: var(--color-orange); opacity: 0.8;">Days</div>
           </div>
           
           <!-- Hours -->
           <div class="text-center">
-            <div class="text-5xl md:text-7xl font-mono font-bold text-cyberBlue text-glow" data-countdown="hours">00</div>
-            <div class="text-sm md:text-base font-rajdhani uppercase text-cyberBlue/70 mt-2">Hours</div>
+            <div class="text-5xl md:text-7xl font-mono font-bold text-glow-glitch" style="color: var(--color-amber);" data-countdown="hours">00</div>
+            <div class="text-sm md:text-base font-rajdhani uppercase mt-2" style="color: var(--color-orange); opacity: 0.8;">Hours</div>
           </div>
           
           <!-- Minutes -->
           <div class="text-center">
-            <div class="text-5xl md:text-7xl font-mono font-bold text-cyberBlue text-glow" data-countdown="minutes">00</div>
-            <div class="text-sm md:text-base font-rajdhani uppercase text-cyberBlue/70 mt-2">Minutes</div>
+            <div class="text-5xl md:text-7xl font-mono font-bold text-glow-glitch" style="color: var(--color-amber);" data-countdown="minutes">00</div>
+            <div class="text-sm md:text-base font-rajdhani uppercase mt-2" style="color: var(--color-orange); opacity: 0.8;">Minutes</div>
           </div>
           
           <!-- Seconds -->
           <div class="text-center">
-            <div class="text-5xl md:text-7xl font-mono font-bold text-cyberBlue text-glow" data-countdown="seconds">00</div>
-            <div class="text-sm md:text-base font-rajdhani uppercase text-cyberBlue/70 mt-2">Seconds</div>
+            <div class="text-5xl md:text-7xl font-mono font-bold text-glow-glitch" style="color: var(--color-amber);" data-countdown="seconds">00</div>
+            <div class="text-sm md:text-base font-rajdhani uppercase mt-2" style="color: var(--color-orange); opacity: 0.8;">Seconds</div>
           </div>
         </div>
         
-        <p class="countdown-message text-lg md:text-xl font-rajdhani text-cyberBlue/80 text-center mb-6">
+        <p class="countdown-message text-lg md:text-xl font-rajdhani text-center mb-6 text-glow-cyan" style="color: #000000;">
           Until the Nexus Opens
         </p>
         
         <!-- Audio Player Section (directly below countdown) -->
-        <div class="flex flex-col items-center">
+        <div id="playerPortalContainer" class="flex flex-col items-center">
           <button 
             id="playBtn"
             class="w-48 h-48 md:w-56 md:h-56 bg-transparent hover:bg-cyberBlue/10 transition-all duration-300 flex items-center justify-center group relative mb-6"
@@ -78,41 +78,42 @@
             />
           </button>
           
-          <!-- Secret Message (appears after clicking play, directly below button) -->
+          <!-- Portal appears here after audio ends (replaces button location) -->
+          <div id="portal" class="portal-section hidden">
+            <div class="portal-card">
+              <h3 class="portal-heading">The Rift Awaits Your Code</h3>
+              
+              <form id="gateForm">
+                <input 
+                  type="text" 
+                  id="gateInput" 
+                  placeholder="Enter the phrase..."
+                  aria-label="Coded phrase input"
+                  autocomplete="off"
+                />
+                <button type="submit">Initiate Sequence</button>
+              </form>
+              
+              <div id="gateError" class="hidden">
+                <span class="error-phrase"></span>
+                <span class="error-time"></span>
+              </div>
+              
+              <div id="gateSuccess" class="hidden">
+                <p>Temporal lock disengaged. You may proceed.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Secret Message (appears after clicking play, directly below button/portal) -->
           <div id="secretMessage" class="hidden text-center">
-            <p class="text-lg md:text-xl font-rajdhani text-cyberBlue/90 text-glow animate-fade-in">
+            <p class="text-lg md:text-xl font-rajdhani text-glow-cyan animate-fade-in" style="color: var(--color-warm-gold); opacity: 0.95;">
               Listen closely... truth hides between the frequencies
             </p>
           </div>
         </div>
       </section>
       
-      <!-- Portal Section (hidden initially) -->
-      <section id="portal" class="portal-section hidden">
-        <div class="portal-card">
-          <h3 class="portal-heading">The Rift Awaits Your Code</h3>
-          
-          <form id="gateForm">
-            <input 
-              type="text" 
-              id="gateInput" 
-              placeholder="Enter the phrase..."
-              aria-label="Coded phrase input"
-              autocomplete="off"
-            />
-            <button type="submit">Initiate Sequence</button>
-          </form>
-          
-          <div id="gateError" class="hidden">
-            <span class="error-phrase"></span>
-            <span class="error-time"></span>
-          </div>
-          
-          <div id="gateSuccess" class="hidden">
-            <p>Temporal lock disengaged. You may proceed.</p>
-          </div>
-        </div>
-      </section>
     </main>
     
     <!-- Audio Element -->
@@ -121,6 +122,68 @@
     </audio>
     
     <!-- Main JS -->
-    <script type="module" src="/src/main.js"></script>
-  </body>
+  <script type="module" src="/src/main.js"></script>
+  
+  <!-- DEBUG: Runtime diagnostics -->
+  <script>
+    console.log('=== DIAGNOSTICS START ===');
+    
+    // Wait for DOM and modules to load
+    setTimeout(() => {
+      console.log('🔍 Running diagnostics...');
+      
+      // Check elements
+      const audio = document.getElementById('audioPlayer');
+      const btn = document.getElementById('playBtn');
+      
+      console.log('Elements:');
+      console.log('  audioPlayer:', audio);
+      console.log('  playBtn:', btn);
+      
+      if (audio) {
+        console.log('  Audio src:', audio.querySelector('source')?.src);
+        console.log('  Audio readyState:', audio.readyState);
+        console.log('  Audio canPlayType(mp3):', audio.canPlayType('audio/mpeg'));
+        console.log('  Audio paused:', audio.paused);
+        console.log('  Audio duration:', audio.duration);
+      }
+      
+      if (btn) {
+        console.log('  Button exists in DOM:', !!btn.parentElement);
+        console.log('  Button visible:', window.getComputedStyle(btn).display !== 'none');
+        
+        // Test click programmatically
+        console.log('📝 To test audio, click the play button or run:');
+        console.log('  document.getElementById("playBtn").click()');
+      }
+      
+      // Expose test function
+      window.testAudio = async () => {
+        console.log('🎵 Testing audio directly...');
+        const audio = document.getElementById('audioPlayer');
+        if (!audio) {
+          console.error('❌ Audio element not found');
+          return;
+        }
+        
+        try {
+          console.log('▶️ Calling audio.play()...');
+          await audio.play();
+          console.log('✅ Audio playing successfully!');
+          console.log('  Current time:', audio.currentTime);
+          console.log('  Duration:', audio.duration);
+          console.log('  Paused:', audio.paused);
+        } catch (err) {
+          console.error('❌ Play failed:', err.name, err.message);
+        }
+      };
+      
+      console.log('💡 Test commands available:');
+      console.log('  testAudio() - Test audio playback directly');
+      console.log('  window.AudioAPI - Access audio API');
+      
+      console.log('=== DIAGNOSTICS END ===');
+    }, 1000);
+  </script>
+</body>
 </html>

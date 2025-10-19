@@ -93,28 +93,25 @@ export function showPortal() {
   
   console.log('  Portal was hidden:', containerElement.classList.contains('hidden'));
   
-  // Unhide portal
+  // Unhide portal with fade-in animation
   containerElement.classList.remove('hidden');
+  containerElement.classList.add('portal-fade-in');
   
   console.log('  Portal now hidden:', containerElement.classList.contains('hidden'));
-  console.log('✅ Portal revealed');
+  console.log('✅ Portal revealed with fade-in animation');
   
-  // Smooth scroll to portal
-  containerElement.scrollIntoView({
-    behavior: 'smooth',
-    block: 'center'
-  });
+  // No scrolling needed - portal appears in same location as button
   
-  // Focus input after scroll completes
+  // Focus input after fade-in animation completes
   setTimeout(() => {
     if (gateInput && !gateInput.disabled) {
       gateInput.focus();
       console.log('✅ Portal input focused');
     }
-  }, 600);
+  }, 1500); // Wait for fade-in animation (1.5s)
   
   if (import.meta.env.DEV) {
-    console.info('🌀 Portal shown and input focused');
+    console.info('🌀 Portal shown with fade-in animation and input focused');
   }
 }
 

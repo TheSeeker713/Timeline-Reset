@@ -162,13 +162,27 @@ function playAudio() {
       isPlaying = true;
       hasPlayed = true;
       
-      // Update button state - add "playing" class
+      // Fade out and remove button to save memory
       if (playButton) {
         playButton.classList.add('playing');
         playButton.setAttribute('aria-pressed', 'true');
-        playButton.style.opacity = '0.5';
-        playButton.style.cursor = 'default';
         playButton.setAttribute('aria-label', 'Audio playing');
+        
+        // Fade out animation
+        playButton.style.transition = 'opacity 1s ease-out';
+        playButton.style.opacity = '0';
+        
+        // Remove button from DOM after fade completes (saves memory)
+        setTimeout(() => {
+          if (playButton && playButton.parentNode) {
+            playButton.parentNode.removeChild(playButton);
+            playButton = null; // Free memory reference
+            
+            if (import.meta.env.DEV) {
+              console.info('🗑️ Play button removed from DOM');
+            }
+          }
+        }, 1000); // Wait for fade animation
       }
       
       // Announce to screen readers
