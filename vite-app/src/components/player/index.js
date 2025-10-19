@@ -1,10 +1,14 @@
 /**
  * Audio Player Component
- * Manages click-to-play audio with portal reveal and accessibility
+ * Manages click-to-play audio with portal reveal, secret message, and cookie persistence
  */
+
+const COOKIE_NAME = 'timeline_reset_audio_played';
+const COOKIE_EXPIRY_DAYS = 365; // 1 year
 
 let audioElement = null;
 let playButton = null;
+let secretMessage = null;
 let isPlaying = false;
 let hasPlayed = false;
 let isUnlocked = false;
@@ -29,8 +33,36 @@ export function initPlayer({ audioEl, playBtnEl, onEnded = null }) {
     return null;
   }
   
+  // Get secret message element
+  secretMessage = document.getElementById('secretMessage');
+  
   // Create aria-live region for status updates
   createAriaLiveRegion();
+  
+  // Check if user has already played audio (cookie check)
+  const hasPlayedBefore = getCookie(COOKIE_NAME);
+  if (hasPlayedBefore === 'true') {
+    // User has played before - show message and portal immediately
+    hasPlayed = true;
+    showSecretMessage();
+    
+    // Reveal portal after short delay
+    setTimeout(() => {
+      revealPortal();
+    }, 1000);
+    
+    // Update button state to indicate already played
+    if (playButton) {
+      playButton.classList.add('played');
+      playButton.style.opacity = '0.5';
+      playButton.style.cursor = 'default';
+      playButton.setAttribute('aria-label', 'Audio already played');
+    }
+    
+    if (import.meta.env.DEV) {
+      console.info('🔄 Returning user - audio already played, restoring state');
+    }
+  }
   
   // Play button click handler
   playButton.addEventListener('click', handlePlayClick);
@@ -46,12 +78,12 @@ export function initPlayer({ audioEl, playBtnEl, onEnded = null }) {
   document.addEventListener('touchstart', unlockAudio, { once: true });
   
   // Set initial ARIA attributes
-  playButton.setAttribute('aria-pressed', 'false');
+  playButton.setAttribute('aria-pressed', hasPlayed ? 'true' : 'false');
   playButton.setAttribute('role', 'button');
   playButton.setAttribute('tabindex', '0');
   
   if (import.meta.env.DEV) {
-    console.info('🔊 Audio player initialized with accessibility');
+    console.info('🔊 Audio player initialized with cookie persistence');
   }
   
   return AudioAPI;
@@ -112,10 +144,16 @@ function handlePlayClick() {
 function playAudio() {
   if (!audioElement || hasPlayed) return;
   
+  // Show secret message immediately when user clicks play
+  showSecretMessage();
+  
   audioElement.play()
     .then(() => {
       isPlaying = true;
       hasPlayed = true;
+      
+      // Set cookie to remember user played audio (privacy-friendly, no tracking)
+      setCookie(COOKIE_NAME, 'true', COOKIE_EXPIRY_DAYS);
       
       // Update button state - add "playing" class
       if (playButton) {
@@ -127,7 +165,7 @@ function playAudio() {
       }
       
       // Announce to screen readers
-      announce('Audio is now playing');
+      announce('Audio is now playing. Listen for hidden messages.');
       
       if (import.meta.env.DEV) {
         console.info('▶️ Audio playing');
@@ -135,7 +173,12 @@ function playAudio() {
     })
     .catch(err => {
       console.error('Audio play failed:', err);
-      announce('Failed to play audio');
+      announce('Failed to play audio. Please try again.');
+      
+      // Hide message if audio fails
+      if (secretMessage) {
+        secretMessage.classList.add('hidden');
+      }
     });
 }
 
@@ -207,6 +250,69 @@ function unlockAudio() {
 }
 
 /**
+ * Show the secret message with fade-in animation
+ */
+function showSecretMessage() {
+  if (secretMessage) {
+    secretMessage.classList.remove('hidden');
+    announce('A message appears: Listen closely... truth hides between the frequencies');
+    
+    if (import.meta.env.DEV) {
+      console.info('📜 Secret message revealed');
+    }
+  }
+}
+
+/**
+ * Set a cookie (privacy-friendly, no tracking)
+ * @param {string} name - Cookie name
+ * @param {string} value - Cookie value
+ * @param {number} days - Expiry in days
+ */
+function setCookie(name, value, days) {
+  const date = new Date();
+  date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+  const expires = `expires=${date.toUTCString()}`;
+  // SameSite=Strict for privacy, no third-party access
+  document.cookie = `${name}=${value};${expires};path=/;SameSite=Strict`;
+  
+  if (import.meta.env.DEV) {
+    console.info(`🍪 Cookie set: ${name}=${value}`);
+  }
+}
+
+/**
+ * Get a cookie value
+ * @param {string} name - Cookie name
+ * @returns {string|null} Cookie value or null if not found
+ */
+function getCookie(name) {
+  const nameEQ = `${name}=`;
+  const cookies = document.cookie.split(';');
+  
+  for (let i = 0; i < cookies.length; i++) {
+    let cookie = cookies[i].trim();
+    if (cookie.indexOf(nameEQ) === 0) {
+      return cookie.substring(nameEQ.length);
+    }
+  }
+  
+  return null;
+}
+
+/**
+ * Delete a cookie (for testing/debugging)
+ * @param {string} name - Cookie name
+ */
+function deleteCookie(name) {
+  document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;SameSite=Strict`;
+  
+  if (import.meta.env.DEV) {
+    console.info(`🍪 Cookie deleted: ${name}`);
+  }
+}
+
+/**
  * Audio API for testing
  */
 export const AudioAPI = {
@@ -214,4 +320,6 @@ export const AudioAPI = {
   isPlaying: () => isPlaying,
   hasPlayed: () => hasPlayed,
   revealPortal,
+  deleteCookie: () => deleteCookie(COOKIE_NAME), // For testing
+  getCookieValue: () => getCookie(COOKIE_NAME), // For testing
 };
