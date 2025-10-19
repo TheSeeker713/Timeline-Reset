@@ -1,10 +1,10 @@
 /**
  * Audio Player Component
- * Manages click-to-play audio with portal reveal, secret message, and cookie persistence
+ * Manages click-to-play audio with portal reveal and secret message
+ * 
+ * TODO: Add user state persistence in the future (consider localStorage or backend)
+ * For now, state resets on page refresh for testing and development
  */
-
-const COOKIE_NAME = 'timeline_reset_audio_played';
-const COOKIE_EXPIRY_DAYS = 365; // 1 year
 
 let audioElement = null;
 let playButton = null;
@@ -24,54 +24,49 @@ let ariaLiveRegion = null;
  * @returns {Object} Audio API
  */
 export function initPlayer({ audioEl, playBtnEl, onEnded = null }) {
+  console.log('🎵 initPlayer() called');
+  console.log('  audioEl:', audioEl);
+  console.log('  playBtnEl:', playBtnEl);
+  console.log('  onEnded callback:', typeof onEnded);
+  
   audioElement = audioEl;
   playButton = playBtnEl;
   onEndedCallback = onEnded;
   
   if (!audioElement || !playButton) {
-    console.error('Audio element or button not found');
+    console.error('❌ Audio element or button not found');
+    console.error('  audioElement:', audioElement);
+    console.error('  playButton:', playButton);
     return null;
   }
   
+  console.log('✅ Audio and button elements found');
+  console.log('  Audio src:', audioElement.querySelector('source')?.src);
+  console.log('  Button id:', playButton.id);
+  
   // Get secret message element
   secretMessage = document.getElementById('secretMessage');
+  console.log('  Secret message element:', secretMessage);
   
   // Create aria-live region for status updates
   createAriaLiveRegion();
   
-  // Check if user has already played audio (cookie check)
-  const hasPlayedBefore = getCookie(COOKIE_NAME);
-  if (hasPlayedBefore === 'true') {
-    // User has played before - show message and portal immediately
-    hasPlayed = true;
-    showSecretMessage();
-    
-    // Reveal portal after short delay
-    setTimeout(() => {
-      revealPortal();
-    }, 1000);
-    
-    // Update button state to indicate already played
-    if (playButton) {
-      playButton.classList.add('played');
-      playButton.style.opacity = '0.5';
-      playButton.style.cursor = 'default';
-      playButton.setAttribute('aria-label', 'Audio already played');
-    }
-    
-    if (import.meta.env.DEV) {
-      console.info('🔄 Returning user - audio already played, restoring state');
-    }
+  if (import.meta.env.DEV) {
+    console.log('✅ First-time user - ready to play audio (state resets on refresh)');
   }
   
   // Play button click handler
   playButton.addEventListener('click', handlePlayClick);
+  console.log('✅ Click event listener attached to button');
   
   // Keyboard accessibility: Space and Enter keys
   playButton.addEventListener('keydown', handleKeydown);
+  console.log('✅ Keydown event listener attached to button');
   
   // Audio ended handler
   audioElement.addEventListener('ended', handleAudioEnded);
+  console.log('✅ Audio ended event listener attached');
+  console.log('  onEnded callback will be called:', !!onEndedCallback);
   
   // iOS audio unlock
   document.addEventListener('click', unlockAudio, { once: true });
@@ -130,11 +125,16 @@ function handleKeydown(event) {
  * Handle play button click
  */
 function handlePlayClick() {
+  console.log('🎯 Play button clicked!'); // Debug log
+  console.log('isPlaying:', isPlaying, 'hasPlayed:', hasPlayed); // Debug state
+  
   if (isPlaying || hasPlayed) {
     announce('Audio has already been played');
+    console.log('❌ Audio blocked - already played');
     return;
   }
   
+  console.log('✅ Proceeding to play audio');
   playAudio();
 }
 
@@ -142,18 +142,25 @@ function handlePlayClick() {
  * Play audio (no autoplay, no loop)
  */
 function playAudio() {
-  if (!audioElement || hasPlayed) return;
+  console.log('🎵 playAudio() called'); // Debug log
+  console.log('audioElement:', audioElement); // Debug element
+  console.log('hasPlayed:', hasPlayed); // Debug state
+  
+  if (!audioElement || hasPlayed) {
+    console.log('❌ playAudio blocked - no element or already played');
+    return;
+  }
   
   // Show secret message immediately when user clicks play
   showSecretMessage();
   
+  console.log('▶️ Calling audioElement.play()...'); // Debug
+  
   audioElement.play()
     .then(() => {
+      console.log('✅ Audio play() promise resolved');
       isPlaying = true;
       hasPlayed = true;
-      
-      // Set cookie to remember user played audio (privacy-friendly, no tracking)
-      setCookie(COOKIE_NAME, 'true', COOKIE_EXPIRY_DAYS);
       
       // Update button state - add "playing" class
       if (playButton) {
@@ -172,7 +179,7 @@ function playAudio() {
       }
     })
     .catch(err => {
-      console.error('Audio play failed:', err);
+      console.error('❌ Audio play failed:', err);
       announce('Failed to play audio. Please try again.');
       
       // Hide message if audio fails
@@ -264,62 +271,11 @@ function showSecretMessage() {
 }
 
 /**
- * Set a cookie (privacy-friendly, no tracking)
- * @param {string} name - Cookie name
- * @param {string} value - Cookie value
- * @param {number} days - Expiry in days
- */
-function setCookie(name, value, days) {
-  const date = new Date();
-  date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-  const expires = `expires=${date.toUTCString()}`;
-  // SameSite=Strict for privacy, no third-party access
-  document.cookie = `${name}=${value};${expires};path=/;SameSite=Strict`;
-  
-  if (import.meta.env.DEV) {
-    console.info(`🍪 Cookie set: ${name}=${value}`);
-  }
-}
-
-/**
- * Get a cookie value
- * @param {string} name - Cookie name
- * @returns {string|null} Cookie value or null if not found
- */
-function getCookie(name) {
-  const nameEQ = `${name}=`;
-  const cookies = document.cookie.split(';');
-  
-  for (let i = 0; i < cookies.length; i++) {
-    let cookie = cookies[i].trim();
-    if (cookie.indexOf(nameEQ) === 0) {
-      return cookie.substring(nameEQ.length);
-    }
-  }
-  
-  return null;
-}
-
-/**
- * Delete a cookie (for testing/debugging)
- * @param {string} name - Cookie name
- */
-function deleteCookie(name) {
-  document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;SameSite=Strict`;
-  
-  if (import.meta.env.DEV) {
-    console.info(`🍪 Cookie deleted: ${name}`);
-  }
-}
-
-/**
- * Audio API for testing
+ * Audio API for testing and external control
  */
 export const AudioAPI = {
   play: playAudio,
   isPlaying: () => isPlaying,
   hasPlayed: () => hasPlayed,
   revealPortal,
-  deleteCookie: () => deleteCookie(COOKIE_NAME), // For testing
-  getCookieValue: () => getCookie(COOKIE_NAME), // For testing
 };

@@ -57,6 +57,13 @@ export function initPortal({ containerEl, targetUtc: target, nowFn: nowFunc = nu
     return null;
   }
   
+  // Clear input field on page load (prevent browser autocomplete/cache)
+  gateInput.value = '';
+  
+  if (import.meta.env.DEV) {
+    console.info('🧹 Input field cleared on init');
+  }
+  
   // Form submission handler
   gateForm.addEventListener('submit', handleFormSubmit);
   
@@ -76,10 +83,21 @@ export function initPortal({ containerEl, targetUtc: target, nowFn: nowFunc = nu
  * Show portal (unhide and focus input)
  */
 export function showPortal() {
-  if (!containerElement) return;
+  console.log('🌀 showPortal() called');
+  console.log('  containerElement:', containerElement);
+  
+  if (!containerElement) {
+    console.error('❌ Portal container element not found');
+    return;
+  }
+  
+  console.log('  Portal was hidden:', containerElement.classList.contains('hidden'));
   
   // Unhide portal
   containerElement.classList.remove('hidden');
+  
+  console.log('  Portal now hidden:', containerElement.classList.contains('hidden'));
+  console.log('✅ Portal revealed');
   
   // Smooth scroll to portal
   containerElement.scrollIntoView({
@@ -91,6 +109,7 @@ export function showPortal() {
   setTimeout(() => {
     if (gateInput && !gateInput.disabled) {
       gateInput.focus();
+      console.log('✅ Portal input focused');
     }
   }, 600);
   

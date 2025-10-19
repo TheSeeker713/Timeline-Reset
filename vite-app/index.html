@@ -60,44 +60,45 @@
           </div>
         </div>
         
-        <p class="countdown-message text-lg md:text-xl font-rajdhani text-cyberBlue/80 text-center mb-4">
+        <p class="countdown-message text-lg md:text-xl font-rajdhani text-cyberBlue/80 text-center mb-6">
           Until the Nexus Opens
         </p>
-      </section>
-      
-      <!-- Audio Player Section -->
-      <section id="audioSection" class="flex flex-col items-center py-4 px-4">
-        <button 
-          id="playBtn"
-          class="w-48 h-48 md:w-56 md:h-56 bg-transparent hover:bg-cyberBlue/10 transition-all duration-300 flex items-center justify-center group relative"
-          aria-label="Play the temporal sequence"
-        >
-          <img 
-            src="/assets/svg/play_button_glitchy.svg" 
-            alt="Play" 
-            class="w-full h-full group-hover:scale-105 transition-transform"
-          />
-        </button>
         
-        <!-- Secret Message (appears after clicking play) -->
-        <div id="secretMessage" class="hidden mt-8 text-center">
-          <p class="text-lg md:text-xl font-rajdhani text-cyberBlue/90 text-glow animate-fade-in">
-            Listen closely... truth hides between the frequencies
-          </p>
+        <!-- Audio Player Section (directly below countdown) -->
+        <div class="flex flex-col items-center">
+          <button 
+            id="playBtn"
+            class="w-48 h-48 md:w-56 md:h-56 bg-transparent hover:bg-cyberBlue/10 transition-all duration-300 flex items-center justify-center group relative mb-6"
+            aria-label="Play the temporal sequence"
+          >
+            <img 
+              src="/assets/svg/play_button_glitchy.svg" 
+              alt="Play" 
+              class="w-full h-full group-hover:scale-105 transition-transform"
+            />
+          </button>
+          
+          <!-- Secret Message (appears after clicking play, directly below button) -->
+          <div id="secretMessage" class="hidden text-center">
+            <p class="text-lg md:text-xl font-rajdhani text-cyberBlue/90 text-glow animate-fade-in">
+              Listen closely... truth hides between the frequencies
+            </p>
+          </div>
         </div>
       </section>
       
       <!-- Portal Section (hidden initially) -->
       <section id="portal" class="portal-section hidden">
         <div class="portal-card">
-          <h3 class="portal-heading">Input Temporal Coordinates Below</h3>
+          <h3 class="portal-heading">The Rift Awaits Your Code</h3>
           
           <form id="gateForm">
             <input 
               type="text" 
               id="gateInput" 
-              placeholder="YYYY-MM-DD HH:MM"
-              aria-label="Temporal coordinates input"
+              placeholder="Enter the phrase..."
+              aria-label="Coded phrase input"
+              autocomplete="off"
             />
             <button type="submit">Initiate Sequence</button>
           </form>

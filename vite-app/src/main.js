@@ -48,10 +48,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const audioEl = document.getElementById('audioPlayer');
   const playBtnEl = document.getElementById('playBtn');
   
+  if (import.meta.env.DEV) {
+    console.log('🔍 Looking for audio elements...');
+    console.log('  audioPlayer element:', audioEl);
+    console.log('  playBtn element:', playBtnEl);
+  }
+  
   initPlayer({
     audioEl,
     playBtnEl,
     onEnded: () => {
+      if (import.meta.env.DEV) {
+        console.log('🎵 Audio ended - revealing portal');
+      }
       // Reveal portal when audio ends
       showPortal();
     }
@@ -59,6 +68,12 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // d) Init portal but keep hidden until audio ended
   const portalContainer = document.getElementById('portal');
+  
+  if (import.meta.env.DEV) {
+    console.log('🔍 Looking for portal element...');
+    console.log('  portal element:', portalContainer);
+    console.log('  portal is hidden:', portalContainer?.classList.contains('hidden'));
+  }
   
   initPortal({
     containerEl: portalContainer,
