@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Timeline Reset - Countdown to the Nexus</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  </head>
+  <body class="overflow-x-hidden">
+    <!-- Background Layer -->
+    <div id="bg" class="fixed inset-0 -z-40">
+      <img 
+        src="/assets/images/glitched_background.webp" 
+        alt="Glitched background" 
+        class="w-full h-full object-cover"
+      />
+    </div>
+    
+    <!-- Glitch Layer -->
+    <div id="glitch-layer"></div>
+    
+    <!-- Main Content -->
+    <main class="relative z-10">
+      <!-- Countdown Section -->
+      <section id="countdown" class="min-h-screen flex flex-col items-center justify-center px-4">
+        <h1 class="text-4xl md:text-6xl font-orbitron font-black text-cyberBlue text-glow mb-8 text-center">
+          TIMELINE RESET
+        </h1>
+        
+        <div class="grid grid-cols-4 gap-4 md:gap-8 mb-8">
+          <!-- Days -->
+          <div class="text-center">
+            <div class="text-5xl md:text-7xl font-mono font-bold text-cyberBlue text-glow" data-countdown="days">00</div>
+            <div class="text-sm md:text-base font-rajdhani uppercase text-cyberBlue/70 mt-2">Days</div>
+          </div>
+          
+          <!-- Hours -->
+          <div class="text-center">
+            <div class="text-5xl md:text-7xl font-mono font-bold text-cyberBlue text-glow" data-countdown="hours">00</div>
+            <div class="text-sm md:text-base font-rajdhani uppercase text-cyberBlue/70 mt-2">Hours</div>
+          </div>
+          
+          <!-- Minutes -->
+          <div class="text-center">
+            <div class="text-5xl md:text-7xl font-mono font-bold text-cyberBlue text-glow" data-countdown="minutes">00</div>
+            <div class="text-sm md:text-base font-rajdhani uppercase text-cyberBlue/70 mt-2">Minutes</div>
+          </div>
+          
+          <!-- Seconds -->
+          <div class="text-center">
+            <div class="text-5xl md:text-7xl font-mono font-bold text-cyberBlue text-glow" data-countdown="seconds">00</div>
+            <div class="text-sm md:text-base font-rajdhani uppercase text-cyberBlue/70 mt-2">Seconds</div>
+          </div>
+        </div>
+        
+        <p class="countdown-message text-lg md:text-xl font-rajdhani text-cyberBlue/80 text-center mb-4">
+          Until the Nexus Opens
+        </p>
+        
+        <p class="text-xs md:text-sm font-mono text-cyberBlue/50">
+          All times PST
+        </p>
+      </section>
+      
+      <!-- Audio Player Section -->
+      <section id="audioPlayer" class="flex justify-center py-12">
+        <button 
+          id="playBtn"
+          class="w-20 h-20 md:w-24 md:h-24 rounded-full bg-cyberBlue/10 border-2 border-cyberBlue hover:bg-cyberBlue/20 transition-all duration-300 flex items-center justify-center group"
+          aria-label="Play audio"
+        >
+          <img 
+            src="/assets/svg/play_button_glitchy.svg" 
+            alt="Play" 
+            class="w-10 h-10 md:w-12 md:h-12 group-hover:scale-110 transition-transform"
+          />
+        </button>
+      </section>
+      
+      <!-- Portal Section (hidden initially) -->
+      <section id="portal" class="portal-section hidden">
+        <div class="portal-card">
+          <h3 class="portal-heading">Input Temporal Coordinates Below</h3>
+          
+          <form id="gateForm">
+            <input 
+              type="text" 
+              id="gateInput" 
+              placeholder="YYYY-MM-DD HH:MM"
+              aria-label="Temporal coordinates input"
+            />
+            <button type="submit">Initiate Sequence</button>
+          </form>
+          
+          <div id="gateError" class="hidden">
+            <span class="error-phrase"></span>
+            <span class="error-time"></span>
+          </div>
+          
+          <div id="gateSuccess" class="hidden">
+            <p>Temporal lock disengaged. You may proceed.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+    
+    <!-- Audio Element -->
+    <audio id="audioPlayer" preload="auto">
+      <source src="/assets/audio/reset.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- Main JS -->
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

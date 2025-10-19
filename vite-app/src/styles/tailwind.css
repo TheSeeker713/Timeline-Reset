@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles */
+@layer base {
+  body {
+    @apply bg-darkPurple text-cyberBlue font-rajdhani antialiased;
+    overflow-x: hidden;
+  }
+}
+
+/* Component layer utilities */
+@layer components {
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .text-glow {
+    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+  }
+  
+  .border-glow {
+    box-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+  }
+}

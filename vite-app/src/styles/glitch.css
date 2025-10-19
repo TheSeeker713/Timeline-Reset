@@ -1,0 +1,102 @@
+/* Glitch Layer Animations */
+
+#glitch-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -30;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  
+  /* Vignette gradient */
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    transparent 30%,
+    rgba(0, 240, 252, 0.1) 70%,
+    rgba(0, 240, 252, 0.3) 100%
+  );
+  
+  /* Default: subtle effects */
+  animation: glitchShift 8s ease-in-out infinite;
+}
+
+#glitch-layer.active {
+  opacity: 1;
+}
+
+/* Glitch animations */
+@keyframes glitchShift {
+  0%, 100% {
+    transform: translate(0, 0);
+    filter: hue-rotate(0deg);
+  }
+  25% {
+    transform: translate(-2px, 2px);
+    filter: hue-rotate(5deg);
+  }
+  50% {
+    transform: translate(2px, -1px);
+    filter: hue-rotate(-5deg);
+  }
+  75% {
+    transform: translate(-1px, -2px);
+    filter: hue-rotate(3deg);
+  }
+}
+
+@keyframes chromaSplit {
+  0%, 100% {
+    text-shadow: 
+      -2px 0 0 rgba(255, 0, 0, 0.5),
+      2px 0 0 rgba(0, 255, 255, 0.5);
+  }
+  50% {
+    text-shadow:
+      2px 0 0 rgba(255, 0, 0, 0.5),
+      -2px 0 0 rgba(0, 255, 255, 0.5);
+  }
+}
+
+@keyframes warpPulse {
+  0%, 100% {
+    transform: scale(1) skewX(0deg);
+  }
+  50% {
+    transform: scale(1.02) skewX(0.5deg);
+  }
+}
+
+/* Intensity levels */
+#glitch-layer[data-intensity="low"] {
+  animation-duration: 8s;
+  opacity: 0.3;
+}
+
+#glitch-layer[data-intensity="medium"] {
+  animation-duration: 4s;
+  opacity: 0.6;
+}
+
+#glitch-layer[data-intensity="high"] {
+  animation-duration: 2s;
+  opacity: 0.9;
+}
+
+#glitch-layer[data-intensity="extreme"] {
+  animation: glitchShift 0.5s ease-in-out infinite,
+             chromaSplit 0.3s ease-in-out infinite;
+  opacity: 1;
+}
+
+/* Apply glitch effects to elements */
+.glitch-text {
+  animation: chromaSplit 0.3s ease-in-out infinite;
+}
+
+.glitch-warp {
+  animation: warpPulse 2s ease-in-out infinite;
+}
