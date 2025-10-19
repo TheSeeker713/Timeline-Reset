@@ -356,6 +356,269 @@
                 rgba(0,0,0,1) 100%
             );
             will-change: transform;
+            transition: mask-image 2s ease-in-out, -webkit-mask-image 2s ease-in-out;
+        }
+        
+        /* Takeover mode: Remove vignette, full-page glitch */
+        #glitch-layer.takeover {
+            mask-image: none;
+            -webkit-mask-image: none;
+        }
+        
+        #glitch-layer.takeover::before,
+        #glitch-layer.takeover::after {
+            opacity: 1;
+        }
+        
+        /* Screen Reader Only utility class */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+        
+        /* Play Button States */
+        #playBtn {
+            transition: opacity 0.3s ease, transform 0.2s ease;
+        }
+        
+        #playBtn.playing {
+            opacity: 0.7;
+            cursor: wait;
+        }
+        
+        #playBtn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        #playBtn:not(.playing):not(:disabled):hover {
+            transform: scale(1.05);
+        }
+        
+        #playBtn:not(.playing):not(:disabled):active {
+            transform: scale(0.95);
+        }
+        
+        /* Portal reveal animation */
+        #portal {
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+        
+        #portal.hidden {
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+        }
+        
+        #portal:not(.hidden) {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* ============================================
+           PORTAL GATE CARD STYLING
+           ============================================ */
+        
+        .portal-card {
+            position: relative;
+            background: radial-gradient(
+                ellipse at center,
+                rgba(26, 6, 57, 0.9) 0%,
+                rgba(10, 0, 30, 0.95) 50%,
+                rgba(0, 0, 0, 0.98) 100%
+            );
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 
+                0 0 30px rgba(15, 240, 252, 0.3),
+                0 0 60px rgba(255, 0, 255, 0.2),
+                inset 0 0 60px rgba(0, 255, 65, 0.05);
+            border: 1px solid rgba(15, 240, 252, 0.3);
+            animation: portalPulse 3s infinite ease-in-out;
+        }
+        
+        @keyframes portalPulse {
+            0%, 100% {
+                box-shadow: 
+                    0 0 30px rgba(15, 240, 252, 0.3),
+                    0 0 60px rgba(255, 0, 255, 0.2),
+                    inset 0 0 60px rgba(0, 255, 65, 0.05);
+            }
+            50% {
+                box-shadow: 
+                    0 0 40px rgba(15, 240, 252, 0.5),
+                    0 0 80px rgba(255, 0, 255, 0.3),
+                    inset 0 0 80px rgba(0, 255, 65, 0.08);
+            }
+        }
+        
+        .portal-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(
+                45deg,
+                rgba(15, 240, 252, 0.4),
+                rgba(255, 0, 255, 0.4),
+                rgba(0, 255, 65, 0.4)
+            );
+            border-radius: 1rem;
+            z-index: -1;
+            opacity: 0.3;
+            filter: blur(8px);
+        }
+        
+        .portal-heading {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            color: #0ff0fc;
+            text-shadow: 
+                0 0 10px rgba(15, 240, 252, 0.8),
+                0 0 20px rgba(15, 240, 252, 0.4);
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        
+        .portal-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1rem;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(15, 240, 252, 0.3);
+            border-radius: 0.5rem;
+            color: #0ff0fc;
+            outline: none;
+            transition: all 0.3s ease;
+            text-align: center;
+            letter-spacing: 0.1em;
+        }
+        
+        .portal-input::placeholder {
+            color: rgba(15, 240, 252, 0.4);
+            text-align: center;
+        }
+        
+        .portal-input:focus {
+            border-color: #0ff0fc;
+            box-shadow: 
+                0 0 10px rgba(15, 240, 252, 0.4),
+                inset 0 0 10px rgba(15, 240, 252, 0.1);
+        }
+        
+        .portal-submit {
+            width: 100%;
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            background: linear-gradient(
+                135deg,
+                rgba(15, 240, 252, 0.2),
+                rgba(255, 0, 255, 0.2)
+            );
+            border: 2px solid #0ff0fc;
+            border-radius: 0.5rem;
+            color: #0ff0fc;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .portal-submit:hover {
+            background: linear-gradient(
+                135deg,
+                rgba(15, 240, 252, 0.3),
+                rgba(255, 0, 255, 0.3)
+            );
+            box-shadow: 
+                0 0 20px rgba(15, 240, 252, 0.5),
+                0 0 40px rgba(255, 0, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .portal-submit:active {
+            transform: translateY(0);
+        }
+        
+        .portal-error {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            border-radius: 0.5rem;
+            color: #ff4444;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.95rem;
+            text-align: center;
+            animation: errorPulse 1s ease-in-out;
+        }
+        
+        @keyframes errorPulse {
+            0% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        
+        .portal-error .error-phrase {
+            display: block;
+            font-weight: 600;
+            color: #ff6666;
+            margin-bottom: 0.5rem;
+        }
+        
+        .portal-error .error-time {
+            display: block;
+            font-style: italic;
+            color: rgba(255, 100, 100, 0.8);
+        }
+        
+        .portal-success {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(0, 255, 65, 0.1);
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            border-radius: 0.5rem;
+            color: #00ff41;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            animation: successGlow 1s ease-in-out;
+        }
+        
+        @keyframes successGlow {
+            0% { 
+                opacity: 0; 
+                transform: scale(0.95);
+                box-shadow: 0 0 0 rgba(0, 255, 65, 0);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(0, 255, 65, 0.6);
+            }
+            100% { 
+                opacity: 1; 
+                transform: scale(1);
+                box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+            }
         }
         
         /* RGB Split Scanlines - Before pseudo */
@@ -653,9 +916,43 @@
                 </button>
             </section>
             
-            <!-- Portal/Gate Section (Hidden for now) -->
+            <!-- Portal/Gate Section -->
             <section id="portal" class="mt-6 w-full max-w-xl hidden relative z-30">
-                <!-- Portal content will be added in later steps -->
+                <div class="portal-card">
+                    <h3 class="portal-heading">
+                        Input Temporal Coordinates Below
+                    </h3>
+                    
+                    <form id="gateForm" class="space-y-4">
+                        <div>
+                            <input 
+                                type="text" 
+                                id="gateInput" 
+                                class="portal-input"
+                                placeholder="YYYY-MM-DD HH:MM"
+                                aria-label="Temporal coordinates input"
+                                autocomplete="off"
+                            />
+                        </div>
+                        
+                        <button 
+                            type="submit" 
+                            class="portal-submit"
+                            aria-label="Submit temporal coordinates"
+                        >
+                            Initiate Sequence
+                        </button>
+                    </form>
+                    
+                    <div id="gateError" role="alert" class="hidden portal-error" aria-live="assertive">
+                        <span class="error-phrase"></span>
+                        <span class="error-time"></span>
+                    </div>
+                    
+                    <div id="gateSuccess" class="hidden portal-success" aria-live="polite">
+                        Temporal lock disengaged.
+                    </div>
+                </div>
             </section>
         </div>
     </main>
@@ -692,13 +989,108 @@
     
     <!-- JavaScript -->
     <script>
-        // Countdown timer
-        function updateCountdown() {
-            const targetDate = new Date('November 11, 2025 11:11:00 PST');
-            const now = new Date();
-            const difference = targetDate - now;
+        // ============================================
+        // COUNTDOWN + GLITCH INTENSITY SYSTEM
+        // ============================================
+        
+        // Target time: 2025-11-11 11:11 AM America/Denver (MST = UTC-7)
+        const TARGET_DATE = new Date('2025-11-11T18:11:00Z');
+        
+        // Calculate total days from project start to target
+        // Using current date as baseline for calculations
+        const PROJECT_START = new Date('2025-10-18T00:00:00Z'); // Today's date
+        const TOTAL_DAYS = Math.ceil((TARGET_DATE - PROJECT_START) / (1000 * 60 * 60 * 24));
+        
+        // Glitch intensity configuration
+        const GLITCH_CONFIG = {
+            initialLevel: 0.10,    // Starting glitch intensity
+            maxLevel: 1.00,        // Maximum intensity (at T-0)
+            targetLevel: 0.85,     // Target intensity day before T-0
+            dailyIncrement: null   // Calculated below
+        };
+        
+        // Calculate daily increment to reach ~0.85 the day before T-0
+        // Formula: (targetLevel - initialLevel) / (totalDays - 1)
+        GLITCH_CONFIG.dailyIncrement = (GLITCH_CONFIG.targetLevel - GLITCH_CONFIG.initialLevel) / (TOTAL_DAYS - 1);
+        
+        // State tracking
+        let isAtZeroHour = false;
+        let lastGlitchUpdate = 0;
+        
+        /**
+         * Calculate glitch intensity based on days remaining
+         * @param {number} daysRemaining - Days until target
+         * @returns {number} Glitch level (0-1)
+         */
+        function calculateGlitchLevel(daysRemaining) {
+            if (daysRemaining <= 0) {
+                return GLITCH_CONFIG.maxLevel;
+            }
             
+            const daysPassed = TOTAL_DAYS - daysRemaining;
+            const level = GLITCH_CONFIG.initialLevel + (daysPassed * GLITCH_CONFIG.dailyIncrement);
+            
+            // Clamp between initial and max
+            return Math.max(GLITCH_CONFIG.initialLevel, Math.min(GLITCH_CONFIG.maxLevel, level));
+        }
+        
+        /**
+         * Trigger full takeover mode at T-0
+         */
+        function triggerTakeover() {
+            if (isAtZeroHour) return; // Already triggered
+            
+            isAtZeroHour = true;
+            
+            // Add takeover class to glitch layer
+            const glitchLayer = document.getElementById('glitch-layer');
+            if (glitchLayer) {
+                glitchLayer.classList.add('takeover');
+            }
+            
+            // Set glitch to maximum
+            if (window.GlitchFX) {
+                GlitchFX.stepTo(1.0, 2000);
+            }
+            
+            // Replace countdown with breach message
+            const countdownSection = document.getElementById('countdown');
+            if (countdownSection) {
+                countdownSection.innerHTML = `
+                    <div class="text-center">
+                        <h3 class="text-3xl md:text-5xl font-orbitron font-bold text-red-500 mb-6 tracking-widest animate-pulse">
+                            ⚠ SIGNAL BREACHED ⚠
+                        </h3>
+                        <p class="text-xl md:text-2xl font-rajdhani text-matrixGreen glitch" data-text="TIMELINE RESET COMPLETE">
+                            TIMELINE RESET COMPLETE
+                        </p>
+                        <div class="mt-8 text-gray-400 font-tech text-sm">
+                            <p>TEMPORAL INTEGRITY: COMPROMISED</p>
+                            <p class="mt-2">CHRONOMETRIC STABILIZATION: OFFLINE</p>
+                            <p class="mt-2">SYSTEM STATUS: CRITICAL</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            console.log('🚨 TAKEOVER MODE ACTIVATED - T-0 REACHED');
+        }
+        
+        /**
+         * Main countdown update function
+         */
+        function updateCountdown() {
+            // Allow date mocking for testing
+            const now = window.__MOCK_DATE__ || new Date();
+            const difference = TARGET_DATE - now;
+            
+            // Check if we've reached T-0
             if (difference <= 0) {
+                if (!isAtZeroHour) {
+                    triggerTakeover();
+                }
+                
+                // Keep countdown at zero
                 document.getElementById('days').textContent = '00';
                 document.getElementById('hours').textContent = '00';
                 document.getElementById('minutes').textContent = '00';
@@ -706,15 +1098,35 @@
                 return;
             }
             
+            // Calculate time units
             const days = Math.floor(difference / (1000 * 60 * 60 * 24));
             const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((difference % (1000 * 60)) / 1000);
             
+            // Update countdown display
             document.getElementById('days').textContent = days.toString().padStart(2, '0');
             document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
             document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
             document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            
+            // Calculate days remaining (ceiling for partial days)
+            const daysRemaining = Math.ceil(difference / (1000 * 60 * 60 * 24));
+            
+            // Update glitch intensity based on days remaining
+            if (window.GlitchFX) {
+                const newLevel = calculateGlitchLevel(daysRemaining);
+                
+                // Update glitch level (throttle to avoid excessive updates)
+                const currentTime = Date.now();
+                if (currentTime - lastGlitchUpdate > 5000) { // Update every 5 seconds
+                    GlitchFX.setLevel(newLevel);
+                    lastGlitchUpdate = currentTime;
+                    
+                    // Debug logging
+                    console.log(`Days remaining: ${daysRemaining}, Glitch level: ${newLevel.toFixed(3)}`);
+                }
+            }
             
             // Glitch effect for seconds
             if(seconds % 5 === 0) {
@@ -727,7 +1139,30 @@
         
         // Initialize countdown and update every second
         updateCountdown();
-        setInterval(updateCountdown, 1000);
+        const countdownInterval = setInterval(updateCountdown, 1000);
+        
+        // Expose for testing
+        window.__COUNTDOWN_API__ = {
+            setMockDate: (date) => {
+                window.__MOCK_DATE__ = new Date(date);
+                updateCountdown();
+            },
+            clearMockDate: () => {
+                window.__MOCK_DATE__ = null;
+                updateCountdown();
+            },
+            getTargetDate: () => TARGET_DATE,
+            getTotalDays: () => TOTAL_DAYS,
+            getGlitchConfig: () => GLITCH_CONFIG,
+            calculateGlitchLevel: calculateGlitchLevel,
+            triggerTakeover: triggerTakeover
+        };
+        
+        console.log('🎯 Countdown initialized');
+        console.log('Target:', TARGET_DATE.toISOString());
+        console.log('Total days:', TOTAL_DAYS);
+        console.log('Daily glitch increment:', GLITCH_CONFIG.dailyIncrement.toFixed(4));
+    </script>
         
         // Matrix Drip Effect - Create new drips periodically
         setInterval(() => {
@@ -887,8 +1322,365 @@
         })();
     </script>
     
-    <!-- Audio Element (no autoplay) -->
-    <audio id="resetAudio" src="/assets/audio/reset.mp3" preload="auto" loop></audio>
+    <script>
+        // ============================================
+        // AUDIO CONTROL SYSTEM
+        // ============================================
+        
+        (function() {
+            'use strict';
+            
+            // Get elements
+            const playBtn = document.getElementById('playBtn');
+            const audio = document.getElementById('resetAudio');
+            const portal = document.getElementById('portal');
+            const audioStatus = document.getElementById('audioStatus');
+            
+            // State management
+            let isPlaying = false;
+            let hasPlayed = false;
+            
+            // Validate elements exist
+            if (!playBtn || !audio || !portal || !audioStatus) {
+                console.error('Audio Control: Required elements not found');
+                return;
+            }
+            
+            /**
+             * Announce to screen readers
+             * @param {string} message - Message to announce
+             */
+            function announce(message) {
+                if (audioStatus) {
+                    audioStatus.textContent = message;
+                }
+            }
+            
+            /**
+             * Reveal the portal section
+             */
+            function revealPortal() {
+                // Remove hidden class
+                portal.classList.remove('hidden');
+                
+                // Announce to screen readers
+                announce('Portal access revealed');
+                
+                // Smooth scroll to portal
+                setTimeout(() => {
+                    portal.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'center' 
+                    });
+                }, 300);
+                
+                console.log('🌀 Portal revealed');
+            }
+            
+            /**
+             * Play the audio
+             */
+            async function playAudio() {
+                // Prevent multiple plays
+                if (isPlaying) {
+                    console.log('Audio already playing');
+                    return;
+                }
+                
+                try {
+                    // Set playing state
+                    isPlaying = true;
+                    hasPlayed = true;
+                    
+                    // Update button appearance
+                    playBtn.classList.add('playing');
+                    playBtn.setAttribute('aria-busy', 'true');
+                    playBtn.setAttribute('aria-label', 'Audio playing');
+                    
+                    // Announce start
+                    announce('Audio started');
+                    
+                    // Play audio (handle promise for iOS compatibility)
+                    await audio.play();
+                    
+                    console.log('🔊 Audio playback started');
+                    
+                } catch (error) {
+                    console.error('Audio playback failed:', error);
+                    
+                    // Reset state on error
+                    isPlaying = false;
+                    playBtn.classList.remove('playing');
+                    playBtn.setAttribute('aria-busy', 'false');
+                    playBtn.setAttribute('aria-label', 'Play audio');
+                    
+                    // Announce error
+                    announce('Audio playback failed. Please try again.');
+                    
+                    // Show error to user
+                    alert('Unable to play audio. Please check your browser settings and try again.');
+                }
+            }
+            
+            /**
+             * Handle audio ended event
+             */
+            function handleAudioEnded() {
+                console.log('🎵 Audio playback complete');
+                
+                // Reset playing state
+                isPlaying = false;
+                
+                // Update button
+                playBtn.classList.remove('playing');
+                playBtn.setAttribute('aria-busy', 'false');
+                playBtn.setAttribute('aria-label', 'Audio complete');
+                playBtn.disabled = true; // Disable after first play
+                
+                // Announce completion
+                announce('Audio ended. Portal access granted.');
+                
+                // Reveal portal after a brief delay
+                setTimeout(() => {
+                    revealPortal();
+                }, 500);
+            }
+            
+            /**
+             * Handle play button click
+             */
+            function handlePlayClick(event) {
+                event.preventDefault();
+                
+                // Only allow first click
+                if (!hasPlayed && !isPlaying) {
+                    playAudio();
+                }
+            }
+            
+            /**
+             * Handle keyboard events
+             */
+            function handleKeyDown(event) {
+                // Space or Enter key
+                if (event.key === ' ' || event.key === 'Enter') {
+                    event.preventDefault();
+                    handlePlayClick(event);
+                }
+            }
+            
+            // Event listeners
+            playBtn.addEventListener('click', handlePlayClick);
+            playBtn.addEventListener('keydown', handleKeyDown);
+            audio.addEventListener('ended', handleAudioEnded);
+            
+            // Error handling
+            audio.addEventListener('error', (e) => {
+                console.error('Audio error:', e);
+                announce('Audio failed to load');
+                
+                // Reset state
+                isPlaying = false;
+                playBtn.classList.remove('playing');
+                playBtn.setAttribute('aria-busy', 'false');
+            });
+            
+            // iOS audio unlock workaround
+            // First user interaction anywhere unlocks audio on iOS
+            let audioUnlocked = false;
+            function unlockAudio() {
+                if (audioUnlocked) return;
+                
+                // Try to play and immediately pause to unlock
+                const playPromise = audio.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        audio.pause();
+                        audio.currentTime = 0;
+                        audioUnlocked = true;
+                        console.log('🔓 iOS audio unlocked');
+                    }).catch(() => {
+                        // Unlock failed, but will try again on button click
+                    });
+                }
+            }
+            
+            // Unlock on first user interaction
+            document.addEventListener('click', unlockAudio, { once: true });
+            document.addEventListener('touchstart', unlockAudio, { once: true });
+            
+            // Expose API for testing
+            window.__AUDIO_API__ = {
+                play: playAudio,
+                isPlaying: () => isPlaying,
+                hasPlayed: () => hasPlayed,
+                revealPortal: revealPortal
+            };
+            
+            console.log('🔊 Audio control system initialized');
+            
+        })();
+    </script>
+    
+    <script>
+        // ============================================
+        // PORTAL GATE CONTROL SYSTEM
+        // ============================================
+        
+        (function() {
+            'use strict';
+            
+            // Target time constant (same as countdown)
+            const TARGET_DATE = new Date('2025-11-11T18:11:00Z');
+            
+            // 11 rejection phrases
+            const REJECTION_PHRASES = [
+                "Signal misaligned. Try again later.",
+                "Temporal corridor not yet stable.",
+                "Chronometric lock engaged.",
+                "Phase variance exceeds threshold.",
+                "Entry vector rejected by nexus.",
+                "Calibration incomplete. Stand by.",
+                "Temporal window is sealed.",
+                "Sequence desynchronized — hold.",
+                "Causality guardrails active.",
+                "Phase gate denies ingress.",
+                "Await synchronization pulse."
+            ];
+            
+            const REJECTION_SUFFIX = "It is not yet time.";
+            
+            // Get elements
+            const gateForm = document.getElementById('gateForm');
+            const gateInput = document.getElementById('gateInput');
+            const gateError = document.getElementById('gateError');
+            const gateSuccess = document.getElementById('gateSuccess');
+            
+            // Validate elements exist
+            if (!gateForm || !gateInput || !gateError || !gateSuccess) {
+                console.error('Portal Gate: Required elements not found');
+                return;
+            }
+            
+            /**
+             * Check if current time is at or past TARGET
+             * @returns {boolean} True if we've reached TARGET time
+             */
+            function isTargetReached() {
+                const now = window.__MOCK_DATE__ || new Date();
+                return now >= TARGET_DATE;
+            }
+            
+            /**
+             * Get a random rejection phrase
+             * @returns {string} Random phrase from the array
+             */
+            function getRandomRejectionPhrase() {
+                const randomIndex = Math.floor(Math.random() * REJECTION_PHRASES.length);
+                return REJECTION_PHRASES[randomIndex];
+            }
+            
+            /**
+             * Display error message with random phrase
+             */
+            function showRejectionMessage() {
+                const randomPhrase = getRandomRejectionPhrase();
+                
+                // Get error elements
+                const phraseElement = gateError.querySelector('.error-phrase');
+                const timeElement = gateError.querySelector('.error-time');
+                
+                if (phraseElement && timeElement) {
+                    phraseElement.textContent = randomPhrase;
+                    timeElement.textContent = REJECTION_SUFFIX;
+                }
+                
+                // Show error
+                gateError.classList.remove('hidden');
+                gateSuccess.classList.add('hidden');
+                
+                console.log('⛔ Gate rejected:', randomPhrase);
+            }
+            
+            /**
+             * Display success message
+             */
+            function showSuccessMessage() {
+                // Hide error, show success
+                gateError.classList.add('hidden');
+                gateSuccess.classList.remove('hidden');
+                
+                // Disable form
+                gateInput.disabled = true;
+                gateForm.querySelector('button[type="submit"]').disabled = true;
+                
+                console.log('✅ Temporal lock disengaged');
+            }
+            
+            /**
+             * Handle form submission
+             * @param {Event} event - Submit event
+             */
+            function handleFormSubmit(event) {
+                event.preventDefault();
+                
+                // Check if we've reached TARGET time
+                if (isTargetReached()) {
+                    // Success: TARGET reached
+                    showSuccessMessage();
+                    
+                    // Log for potential future use
+                    const inputValue = gateInput.value.trim();
+                    console.log('Gate accepted. Input:', inputValue || 'none');
+                    
+                } else {
+                    // Rejection: Before TARGET
+                    showRejectionMessage();
+                }
+                
+                return false;
+            }
+            
+            /**
+             * Handle input field changes
+             */
+            function handleInputChange() {
+                // Hide error when user starts typing again
+                if (!gateError.classList.contains('hidden')) {
+                    gateError.classList.add('hidden');
+                }
+            }
+            
+            // Event listeners
+            gateForm.addEventListener('submit', handleFormSubmit);
+            gateInput.addEventListener('input', handleInputChange);
+            
+            // Expose API for testing
+            window.__GATE_API__ = {
+                isTargetReached: isTargetReached,
+                getRandomPhrase: getRandomRejectionPhrase,
+                showRejection: showRejectionMessage,
+                showSuccess: showSuccessMessage,
+                getTarget: () => TARGET_DATE,
+                getPhrases: () => REJECTION_PHRASES
+            };
+            
+            console.log('🌀 Portal gate system initialized');
+            console.log('Target:', TARGET_DATE.toISOString());
+            console.log('Rejection phrases loaded:', REJECTION_PHRASES.length);
+            
+        })();
+    </script>
+    
+    <!-- Audio Element (no autoplay, no loop) -->
+    <audio id="resetAudio" src="/assets/audio/reset.mp3" preload="auto"></audio>
+    
+    <!-- ARIA Live Region for Audio Announcements -->
+    <div id="audioStatus" 
+         class="sr-only" 
+         role="status" 
+         aria-live="polite" 
+         aria-atomic="true"></div>
 
 </body>
 </html>
