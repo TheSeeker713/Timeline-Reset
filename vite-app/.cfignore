@@ -1,0 +1,96 @@
+# ============================================
+# Cloudflare Pages .cfignore
+# Files/folders to exclude from deployment
+# ============================================
+
+# Development & Debug Files
+# ============================================
+*.md
+!README.md
+audio-diagnostic.js
+audio-test.html
+test-script.js
+
+# Documentation folders
+documents/
+archived-docs/
+debug-logs/
+
+# Development dependencies
+# ============================================
+node_modules/
+.cache/
+.temp/
+.vscode/
+.idea/
+
+# Source files (already built to dist/)
+# ============================================
+src/
+postcss.config.js
+tailwind.config.js
+vite.config.js
+
+# Package management (not needed in production)
+# ============================================
+package.json
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Git files
+# ============================================
+.git/
+.gitignore
+.gitattributes
+.github/
+
+# Build artifacts (except dist/)
+# ============================================
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+Thumbs.db
+
+# Environment files
+# ============================================
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+
+# Test files
+# ============================================
+__tests__/
+*.test.js
+*.spec.js
+coverage/
+.nyc_output/
+
+# Editor files
+# ============================================
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+.vscode/
+.idea/
+
+# Temporary files
+# ============================================
+tmp/
+temp/
+*.tmp
+*.bak
+*.backup
+
+# Misc
+# ============================================
+TODO.md
+NOTES.md
+SCRATCH.md
