@@ -12,10 +12,15 @@ git add .
 git commit -m "chore: prepare for Cloudflare deployment"
 git push origin main
 
-# 3. Deploy on Cloudflare Pages dashboard
-# Build command: npm run build
-# Build output: dist
-# Root directory: vite-app
+# 3. Deploy via Cloudflare Dashboard
+# - Go to dash.cloudflare.com
+# - Workers & Pages > Create > Pages > Connect to Git
+# - Select TheSeeker713/Timeline-Reset
+# - Configure:
+#   Build command: npm run build
+#   Build output: dist
+#   Root directory: vite-app
+# - Save and Deploy
 ```
 
 ---
@@ -49,10 +54,12 @@ git push origin main
 
 | Setting | Value |
 |---------|-------|
+| Dashboard Path | Workers & Pages > Create > Pages > Connect to Git |
 | Build command | `npm run build` |
 | Build output | `dist` |
 | Root directory | `vite-app` |
-| Node version | `18+` |
+| Production branch | `main` |
+| Framework preset | None (or Vite) |
 
 ---
 

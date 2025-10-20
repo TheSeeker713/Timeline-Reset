@@ -30,29 +30,42 @@ git push origin main
 
 ### Step 4: Deploy to Cloudflare Pages (3 minutes)
 
-#### Option A: Automatic Deploy (Recommended)
+#### Git Integration (Recommended - Auto-deploys on push)
 1. Go to https://dash.cloudflare.com/
-2. Navigate to **Pages** > **Create a project**
-3. Click **Connect to Git**
-4. Select repository: `TheSeeker713/Timeline-Reset`
-5. Configure settings:
+2. Navigate to **Workers & Pages**
+3. Click **Create application** > **Pages** > **Connect to Git**
+4. Sign in with GitHub (grants Pages access to repositories)
+5. Select repository: `TheSeeker713/Timeline-Reset`
+6. Click **Install & Authorize** then **Begin setup**
+7. Configure **Set up builds and deployments**:
    ```
    Project name:         timeline-reset
    Production branch:    main
+   
+   Build settings:
+   Framework preset:     None (or Vite)
    Build command:        npm run build
    Build output:         dist
    Root directory:       vite-app
+   
+   Environment variables: (optional - leave blank for this project)
    ```
-6. Click **Save and Deploy**
-7. Wait ~2 minutes for first build
+8. Click **Save and Deploy**
+9. Wait ~2 minutes for first build
+10. Get your live URL: `https://timeline-reset.pages.dev`
 
-#### Option B: Direct Upload (Faster, but no auto-updates)
+**Benefits:** Auto-deploys on every push to main branch, preview deployments for other branches
+
+#### Direct Upload (Faster first deploy, but manual updates)
 1. Go to https://dash.cloudflare.com/
-2. Navigate to **Pages** > **Create a project**
-3. Click **Direct Upload**
-4. Drag and drop the `vite-app/dist/` folder
-5. Click **Deploy**
-6. Live in ~30 seconds
+2. Navigate to **Workers & Pages**
+3. Click **Create application** > **Pages** > **Direct Upload**
+4. Name your project: `timeline-reset`
+5. Drag and drop the `vite-app/dist/` folder
+6. Click **Deploy site**
+7. Live in ~30 seconds
+
+**Note:** Cannot switch to Git integration later. Must manually upload dist/ folder for each update.
 
 ---
 

@@ -55,13 +55,18 @@ git push origin main
 
 ### Step 2: Connect Cloudflare Pages (2 minutes)
 1. Visit https://dash.cloudflare.com/
-2. Go to **Pages** → **Create a project** → **Connect to Git**
-3. Select: `TheSeeker713/Timeline-Reset`
-4. Configure:
-   - Build command: `npm run build`
-   - Build output: `dist`
-   - Root directory: `vite-app`
-5. Click **Save and Deploy**
+2. Go to **Workers & Pages**
+3. Click **Create application** > **Pages** > **Connect to Git**
+4. Sign in with GitHub and authorize Cloudflare Pages
+5. Select repository: `TheSeeker713/Timeline-Reset`
+6. Click **Install & Authorize** > **Begin setup**
+7. Configure build settings:
+   - **Project name:** `timeline-reset`
+   - **Production branch:** `main`
+   - **Build command:** `npm run build`
+   - **Build output directory:** `dist`
+   - **Root directory:** `vite-app`
+8. Click **Save and Deploy**
 
 ### Step 3: Go Live! (1-2 minutes)
 - Wait for Cloudflare to build and deploy
