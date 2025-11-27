@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>THIS WEBSITE HAS BEEN SEIZED</title>
+    <title>This Domain Has Been Seized</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,7 +21,7 @@
       }
       
       body {
-        background: linear-gradient(180deg, #1a1a2e 0%, #0f0f1a 100%);
+        background: #0a0a0f;
         min-height: 100vh;
         font-family: 'Open Sans', Arial, sans-serif;
         color: #ffffff;
@@ -29,44 +29,27 @@
       }
       
       .seizure-container {
-        max-width: 1200px;
+        max-width: 1100px;
         margin: 0 auto;
-        padding: 40px 20px;
+        padding: 30px 20px 20px;
         text-align: center;
       }
       
       /* Header Banner */
       .seizure-banner {
-        background: linear-gradient(135deg, #8B0000 0%, #5a0000 50%, #8B0000 100%);
-        border: 4px solid #ffd700;
-        border-radius: 0;
-        padding: 25px 40px;
-        margin-bottom: 40px;
-        box-shadow: 0 0 30px rgba(139, 0, 0, 0.6), inset 0 0 60px rgba(0,0,0,0.3);
-        position: relative;
+        background: #8B0000;
+        border: none;
+        padding: 18px 40px;
+        margin-bottom: 30px;
       }
-      
-      .seizure-banner::before,
-      .seizure-banner::after {
-        content: '';
-        position: absolute;
-        top: 10px;
-        bottom: 10px;
-        width: 4px;
-        background: #ffd700;
-      }
-      
-      .seizure-banner::before { left: 15px; }
-      .seizure-banner::after { right: 15px; }
       
       .seizure-title {
         font-family: 'Merriweather', Georgia, serif;
-        font-size: clamp(1.8rem, 5vw, 3.5rem);
+        font-size: clamp(1.5rem, 4vw, 2.8rem);
         font-weight: 900;
         color: #ffffff;
         text-transform: uppercase;
-        letter-spacing: 4px;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        letter-spacing: 6px;
         margin: 0;
       }
       
@@ -75,139 +58,156 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 40px;
+        gap: 60px;
         flex-wrap: wrap;
-        margin-bottom: 40px;
+        margin-bottom: 30px;
       }
       
       .seal {
-        width: 140px;
-        height: 140px;
+        width: 130px;
+        height: 130px;
         border-radius: 50%;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         position: relative;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.4);
       }
       
-      /* P3E Seal - Main Gold Seal */
-      .seal-p3e {
-        background: linear-gradient(145deg, #ffd700 0%, #b8860b 50%, #ffd700 100%);
-        border: 6px solid #1a1a2e;
-        width: 160px;
-        height: 160px;
-      }
-      
-      .seal-p3e-inner {
-        background: linear-gradient(145deg, #1a1a2e 0%, #2d2d4a 100%);
-        border-radius: 50%;
-        width: 120px;
-        height: 120px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        border: 3px solid #ffd700;
-      }
-      
-      .seal-p3e-text {
-        font-family: 'Merriweather', serif;
-        font-size: 2rem;
-        font-weight: 900;
-        color: #ffd700;
-        line-height: 1;
-      }
-      
-      .seal-p3e-subtitle {
-        font-size: 0.5rem;
-        color: #ffd700;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-top: 2px;
-      }
-      
-      /* Division Seals */
-      .seal-division {
+      /* DOJ Seal */
+      .seal-doj {
         background: linear-gradient(145deg, #1e3a5f 0%, #0d1b2a 100%);
-        border: 4px solid #4a90c2;
+        border: 3px solid #4a7eb8;
+        box-shadow: 0 0 0 2px #0a0a0f, 0 0 0 4px #2a5480;
       }
       
-      .seal-division i {
-        font-size: 2.5rem;
-        color: #4a90c2;
-        margin-bottom: 5px;
+      .seal-doj i {
+        font-size: 2.2rem;
+        color: #6ba3d6;
+        margin-bottom: 6px;
       }
       
-      .seal-division-text {
-        font-size: 0.55rem;
+      .seal-doj-text {
+        font-size: 0.5rem;
         color: #ffffff;
         text-transform: uppercase;
         letter-spacing: 0.5px;
         text-align: center;
-        padding: 0 10px;
+        line-height: 1.3;
+        font-weight: 600;
+      }
+      
+      /* P3E Seal - Main Gold Seal */
+      .seal-p3e {
+        background: linear-gradient(145deg, #d4af37 0%, #996515 50%, #d4af37 100%);
+        border: none;
+        width: 150px;
+        height: 150px;
+        box-shadow: 0 0 0 3px #0a0a0f, 0 0 0 5px #b8860b, 0 4px 15px rgba(0,0,0,0.5);
+      }
+      
+      .seal-p3e-inner {
+        background: linear-gradient(145deg, #0d1117 0%, #1a1f2e 100%);
+        border-radius: 50%;
+        width: 115px;
+        height: 115px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #d4af37;
+      }
+      
+      .seal-p3e-icon {
+        font-size: 1.8rem;
+        color: #d4af37;
+        margin-bottom: 2px;
+      }
+      
+      .seal-p3e-text {
+        font-family: 'Merriweather', serif;
+        font-size: 0.65rem;
+        font-weight: 700;
+        color: #d4af37;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-align: center;
         line-height: 1.2;
+      }
+      
+      .seal-p3e-subtitle {
+        font-size: 0.45rem;
+        color: #d4af37;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-top: 1px;
+        opacity: 0.9;
+      }
+      
+      /* FBI Seal */
+      .seal-fbi {
+        background: linear-gradient(145deg, #1e3a5f 0%, #0d1b2a 100%);
+        border: 3px solid #4a7eb8;
+        box-shadow: 0 0 0 2px #0a0a0f, 0 0 0 4px #2a5480;
+      }
+      
+      .seal-fbi i {
+        font-size: 2.2rem;
+        color: #6ba3d6;
+        margin-bottom: 6px;
+      }
+      
+      .seal-fbi-text {
+        font-size: 0.5rem;
+        color: #ffffff;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        text-align: center;
+        line-height: 1.3;
+        font-weight: 600;
       }
       
       /* Seized Domain Box */
       .domain-box {
-        background: linear-gradient(180deg, #0d0d15 0%, #1a1a2e 100%);
-        border: 3px solid #4a90c2;
-        padding: 30px 50px;
-        margin: 30px auto;
-        max-width: 700px;
+        background: #0d0d12;
+        border: 2px solid #3a3a4a;
+        padding: 20px 40px;
+        margin: 25px auto;
+        max-width: 600px;
         position: relative;
       }
       
-      .domain-box::before {
-        content: 'SEIZED DOMAIN';
-        position: absolute;
-        top: -12px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: #4a90c2;
-        color: #ffffff;
-        padding: 4px 20px;
-        font-size: 0.75rem;
-        font-weight: 700;
-        letter-spacing: 2px;
+      .domain-label {
+        font-size: 0.7rem;
+        color: #888;
         text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 8px;
       }
       
       .domain-url {
         font-family: 'Roboto Mono', monospace;
-        font-size: clamp(1.5rem, 4vw, 2.5rem);
-        color: #ff4444;
+        font-size: clamp(1.3rem, 3.5vw, 2rem);
+        color: #ffffff;
         font-weight: 500;
-        text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
       }
       
       /* Legal Text */
       .legal-section {
-        background: rgba(255,255,255,0.03);
-        border: 1px solid rgba(255,255,255,0.1);
-        padding: 30px 40px;
-        margin: 30px auto;
-        max-width: 900px;
+        background: transparent;
+        padding: 25px 30px;
+        margin: 25px auto;
+        max-width: 850px;
         text-align: left;
-      }
-      
-      .legal-header {
-        font-family: 'Merriweather', serif;
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: #ffd700;
-        margin-bottom: 15px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
+        border-top: 1px solid #2a2a35;
+        border-bottom: 1px solid #2a2a35;
       }
       
       .legal-text {
-        font-size: 0.95rem;
-        line-height: 1.8;
+        font-size: 0.9rem;
+        line-height: 1.9;
         color: #cccccc;
-        margin-bottom: 15px;
+        margin-bottom: 18px;
       }
       
       .legal-text strong {
@@ -216,66 +216,92 @@
       
       .statute-list {
         list-style: none;
-        padding-left: 20px;
-        margin: 15px 0;
+        padding-left: 0;
+        margin: 18px 0;
+        columns: 1;
       }
       
       .statute-list li {
         position: relative;
-        padding-left: 25px;
-        margin-bottom: 8px;
-        color: #aaaaaa;
-        font-size: 0.9rem;
+        padding-left: 20px;
+        margin-bottom: 6px;
+        color: #999999;
+        font-size: 0.85rem;
       }
       
       .statute-list li::before {
-        content: '§';
+        content: '•';
         position: absolute;
-        left: 0;
-        color: #ffd700;
-        font-weight: bold;
+        left: 5px;
+        color: #666;
+      }
+      
+      /* Threat Section */
+      .threat-section {
+        background: rgba(139, 0, 0, 0.1);
+        border: 1px solid rgba(139, 0, 0, 0.3);
+        padding: 20px 30px;
+        margin: 25px auto;
+        max-width: 850px;
+        text-align: left;
+      }
+      
+      .threat-header {
+        font-family: 'Merriweather', serif;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #ff6b6b;
+        margin-bottom: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      
+      .threat-text {
+        font-size: 0.88rem;
+        line-height: 1.8;
+        color: #cccccc;
+      }
+      
+      .threat-name {
+        color: #ff4444;
+        font-weight: 700;
+        font-family: 'Roboto Mono', monospace;
       }
       
       /* Agency Badges */
       .agencies-section {
-        margin: 40px 0;
+        margin: 30px 0;
       }
       
       .agencies-header {
-        font-size: 0.8rem;
-        color: #888888;
+        font-size: 0.7rem;
+        color: #666666;
         text-transform: uppercase;
         letter-spacing: 3px;
-        margin-bottom: 25px;
+        margin-bottom: 20px;
       }
       
       .agencies-grid {
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 30px;
+        gap: 25px;
         flex-wrap: wrap;
       }
       
       .agency-badge {
-        background: rgba(255,255,255,0.05);
-        border: 2px solid rgba(255,255,255,0.1);
-        border-radius: 8px;
-        padding: 15px 25px;
+        background: transparent;
+        border: 1px solid #2a2a35;
+        border-radius: 4px;
+        padding: 12px 20px;
         display: flex;
         align-items: center;
-        gap: 12px;
-        transition: all 0.3s ease;
-      }
-      
-      .agency-badge:hover {
-        border-color: #ffd700;
-        background: rgba(255,215,0,0.05);
+        gap: 10px;
       }
       
       .agency-badge i {
-        font-size: 1.5rem;
-        color: #4a90c2;
+        font-size: 1.2rem;
+        color: #4a7eb8;
       }
       
       .agency-badge-text {
@@ -283,51 +309,75 @@
       }
       
       .agency-badge-name {
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         font-weight: 700;
         color: #ffffff;
         text-transform: uppercase;
-        letter-spacing: 1px;
+        letter-spacing: 0.5px;
       }
       
       .agency-badge-division {
-        font-size: 0.7rem;
-        color: #888888;
-      }
-      
-      /* Warning Footer */
-      .warning-footer {
-        margin-top: 50px;
-        padding-top: 30px;
-        border-top: 1px solid rgba(255,255,255,0.1);
-      }
-      
-      .warning-text {
-        font-size: 0.8rem;
-        color: #ff6b6b;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        margin-bottom: 10px;
-      }
-      
-      .case-number {
-        font-family: 'Roboto Mono', monospace;
-        font-size: 0.85rem;
+        font-size: 0.6rem;
         color: #666666;
+      }
+      
+      /* Footer */
+      .case-footer {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #1a1a22;
+      }
+      
+      .case-info {
+        font-family: 'Roboto Mono', monospace;
+        font-size: 0.75rem;
+        color: #555555;
+        margin-bottom: 8px;
+      }
+      
+      .report-info {
+        font-size: 0.8rem;
+        color: #666666;
+        margin-bottom: 25px;
+      }
+      
+      .report-info a {
+        color: #4a7eb8;
+        text-decoration: none;
+      }
+      
+      .report-info a:hover {
+        text-decoration: underline;
+      }
+      
+      /* Disclaimer */
+      .disclaimer {
+        margin-top: 40px;
+        padding-top: 15px;
+        border-top: 1px solid #1a1a22;
+      }
+      
+      .disclaimer-text {
+        font-size: 0.55rem;
+        color: #3a3a3a;
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.6;
+        letter-spacing: 0.3px;
       }
       
       /* Responsive */
       @media (max-width: 768px) {
         .seizure-container {
-          padding: 20px 15px;
+          padding: 20px 15px 15px;
         }
         
         .seizure-banner {
-          padding: 20px 25px;
+          padding: 15px 20px;
         }
         
         .seals-container {
-          gap: 20px;
+          gap: 30px;
         }
         
         .seal {
@@ -345,39 +395,36 @@
           height: 90px;
         }
         
-        .seal-p3e-text {
-          font-size: 1.5rem;
+        .seal-doj i,
+        .seal-fbi i {
+          font-size: 1.6rem;
         }
         
-        .seal-division i {
-          font-size: 1.8rem;
+        .seal-doj-text,
+        .seal-fbi-text {
+          font-size: 0.4rem;
         }
         
         .domain-box {
-          padding: 25px 20px;
+          padding: 18px 20px;
         }
         
-        .legal-section {
-          padding: 20px;
+        .legal-section,
+        .threat-section {
+          padding: 20px 15px;
         }
         
         .agencies-grid {
-          gap: 15px;
+          gap: 12px;
         }
         
         .agency-badge {
-          padding: 12px 18px;
+          padding: 10px 15px;
         }
-      }
-      
-      /* Subtle animation */
-      @keyframes pulse-glow {
-        0%, 100% { box-shadow: 0 0 30px rgba(139, 0, 0, 0.6); }
-        50% { box-shadow: 0 0 50px rgba(139, 0, 0, 0.8); }
-      }
-      
-      .seizure-banner {
-        animation: pulse-glow 3s ease-in-out infinite;
+        
+        .statute-list {
+          columns: 1;
+        }
       }
     </style>
   </head>
@@ -385,89 +432,123 @@
     <div class="seizure-container">
       <!-- Main Seizure Banner -->
       <div class="seizure-banner">
-        <h1 class="seizure-title">This Website Has Been Seized</h1>
+        <h1 class="seizure-title">This Domain Has Been Seized</h1>
       </div>
       
       <!-- Official Seals -->
       <div class="seals-container">
-        <!-- Temporal Crimes Division -->
-        <div class="seal seal-division">
-          <i class="fas fa-clock"></i>
-          <span class="seal-division-text">Temporal Crimes Division</span>
+        <!-- DOJ Seal -->
+        <div class="seal seal-doj">
+          <i class="fas fa-balance-scale"></i>
+          <span class="seal-doj-text">U.S. Department<br>of Justice</span>
         </div>
         
         <!-- P3E Main Seal -->
         <div class="seal seal-p3e">
           <div class="seal-p3e-inner">
-            <span class="seal-p3e-text">P3E</span>
-            <span class="seal-p3e-subtitle">Paradigm Evolution</span>
+            <i class="fas fa-shield-halved seal-p3e-icon"></i>
+            <span class="seal-p3e-text">Paradigm Evolution<br>Productions</span>
+            <span class="seal-p3e-subtitle">DOJ • Est. 2019</span>
           </div>
         </div>
         
-        <!-- Reality Enforcement -->
-        <div class="seal seal-division">
-          <i class="fas fa-eye"></i>
-          <span class="seal-division-text">Reality Enforcement Agency</span>
+        <!-- FBI Seal -->
+        <div class="seal seal-fbi">
+          <i class="fas fa-user-shield"></i>
+          <span class="seal-fbi-text">Federal Bureau of<br>Investigation</span>
         </div>
       </div>
       
       <!-- Seized Domain -->
       <div class="domain-box">
+        <div class="domain-label">Seized Domain</div>
         <span class="domain-url">p3epro.com</span>
       </div>
       
       <!-- Legal Justification -->
       <div class="legal-section">
-        <h2 class="legal-header">Official Seizure Notice</h2>
         <p class="legal-text">
-          This domain has been <strong>seized by PARADIGM EVOLUTION PRODUCTIONS</strong> pursuant to an 
-          Interdimensional Seizure Warrant issued by the <strong>Temporal Crimes Division</strong> of the 
-          <strong>Reality Enforcement Agency</strong>, in accordance with the following multiversal statutes:
+          This domain name has been <strong>seized</strong> by the <strong>Paradigm Evolution Productions Division</strong> 
+          of the U.S. Department of Justice, pursuant to a seizure warrant issued by a United States District Court 
+          under the authority of <strong>18 U.S.C. §§ 981, 982</strong> and <strong>18 U.S.C. § 1030</strong> 
+          (Computer Fraud and Abuse Act), as part of a law enforcement action by:
         </p>
         <ul class="statute-list">
-          <li>Temporal Code § 2025.11 — Unauthorized Timeline Manipulation</li>
-          <li>Reality Act § 42.0 — Distribution of Paradox-Inducing Content</li>
-          <li>Dimensional Protocol § 7.7.7 — Operating an Unregistered Nexus Portal</li>
-          <li>Paradigm Statute § 3.14159 — Conspiracy to Breach the Fourth Wall</li>
+          <li>U.S. Department of Justice – Paradigm Evolution Productions Division</li>
+          <li>Federal Bureau of Investigation – Cyber Division</li>
+          <li>U.S. Department of Homeland Security – Cybersecurity and Infrastructure Security Agency (CISA)</li>
+          <li>U.S. Secret Service – Electronic Crimes Task Force</li>
         </ul>
-        <p class="legal-text">
-          Any attempt to access, replicate, or redistribute content from this domain is <strong>strictly prohibited</strong> 
-          and may result in temporal displacement, memory fragmentation, or permanent exile to the Void Between Realities.
+      </div>
+      
+      <!-- Threat Information -->
+      <div class="threat-section">
+        <h2 class="threat-header">Active Threat Investigation</h2>
+        <p class="threat-text">
+          This domain has been identified as infrastructure operated by or affiliated with the hacktivist collective 
+          known as <span class="threat-name">"THE S33K3R"</span>. This group is designated as a domestic cyber threat 
+          organization responsible for the dissemination of disinformation, conspiracy-based psychological operations, 
+          and coordinated attacks against critical information infrastructure.
+        </p>
+        <p class="threat-text" style="margin-top: 12px;">
+          The Paradigm Evolution Productions Division actively monitors and disrupts networks promoting 
+          unfounded claims regarding so-called "alternate realities," "timeline manipulation," and other 
+          pseudoscientific narratives designed to undermine public trust in established institutions.
         </p>
       </div>
       
       <!-- Cooperating Agencies -->
       <div class="agencies-section">
-        <p class="agencies-header">Seizure Conducted In Coordination With</p>
+        <p class="agencies-header">Coordinating Agencies</p>
         <div class="agencies-grid">
           <div class="agency-badge">
             <i class="fas fa-globe"></i>
             <div class="agency-badge-text">
-              <div class="agency-badge-name">M.E.T.A.</div>
-              <div class="agency-badge-division">Multiversal Enforcement & Temporal Affairs</div>
+              <div class="agency-badge-name">INTERPOL</div>
+              <div class="agency-badge-division">Cybercrime Directorate</div>
             </div>
           </div>
           <div class="agency-badge">
             <i class="fas fa-shield-halved"></i>
             <div class="agency-badge-text">
-              <div class="agency-badge-name">C.H.R.O.N.O.S.</div>
-              <div class="agency-badge-division">Chronal Hazard Response Operations</div>
+              <div class="agency-badge-name">DHS / CISA</div>
+              <div class="agency-badge-division">Infrastructure Security</div>
             </div>
           </div>
           <div class="agency-badge">
-            <i class="fas fa-atom"></i>
+            <i class="fas fa-landmark"></i>
             <div class="agency-badge-text">
-              <div class="agency-badge-name">Q.U.A.N.T.U.M.</div>
-              <div class="agency-badge-division">Quantum Unified Analysis Network</div>
+              <div class="agency-badge-name">U.S. Treasury</div>
+              <div class="agency-badge-division">Financial Crimes Enforcement</div>
+            </div>
+          </div>
+          <div class="agency-badge">
+            <i class="fas fa-satellite-dish"></i>
+            <div class="agency-badge-text">
+              <div class="agency-badge-name">NSA</div>
+              <div class="agency-badge-division">Signals Intelligence</div>
             </div>
           </div>
         </div>
       </div>
       
-      <!-- Warning Footer -->
-      <div class="warning-footer">
-        <p class="warning-text">⚠ Violation of this order is punishable across all known timelines ⚠</p>
-        <p class="case-number">Case No. TCD-2025-NEXUS-1111 | Warrant ID: P3E-PARADIGM-SHIFT-∞</p>
+      <!-- Footer -->
+      <div class="case-footer">
+        <p class="case-info">Case No. 1:25-cv-01111-PEP &nbsp;|&nbsp; Warrant No. DOJ-PEP-2025-S33K3R-001</p>
+        <p class="report-info">
+          If you have information concerning this matter, please contact the FBI's Internet Crime Complaint Center at 
+          <a href="https://www.ic3.gov" target="_blank" rel="noopener">www.ic3.gov</a>
+        </p>
+      </div>
+      
+      <!-- Fictional Disclaimer -->
+      <div class="disclaimer">
+        <p class="disclaimer-text">
+          DISCLAIMER: This website and all content displayed herein is entirely fictional and created for entertainment purposes only. 
+          This is not an actual government seizure notice. "Paradigm Evolution Productions," "THE S33K3R," and all associated agencies, 
+          case numbers, and legal references are fictional. No affiliation with any real government agency is implied or intended. 
+          This is a work of parody and creative fiction. © 2025 P3E Productions.
+        </p>
       </div>
     </div>
   </body>
