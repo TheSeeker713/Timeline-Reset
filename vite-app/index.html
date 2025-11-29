@@ -366,6 +366,137 @@
         letter-spacing: 0.3px;
       }
       
+      /* S33K3R Overlay */
+      .seeker-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.92);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 5s ease-in-out, visibility 0s linear 5s;
+      }
+      
+      .seeker-overlay.visible {
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 5s ease-in-out, visibility 0s linear 0s;
+      }
+      
+      .seeker-overlay.fade-out {
+        opacity: 0;
+        transition: opacity 2s ease-out;
+      }
+      
+      .seeker-title {
+        font-family: 'Roboto Mono', monospace;
+        font-size: clamp(1.2rem, 4vw, 2.5rem);
+        color: #00ff00;
+        text-transform: uppercase;
+        letter-spacing: 4px;
+        margin-bottom: 25px;
+        text-shadow: 0 0 20px rgba(0, 255, 0, 0.5), 0 0 40px rgba(0, 255, 0, 0.3);
+        text-align: center;
+        padding: 0 20px;
+      }
+      
+      .seeker-link {
+        font-family: 'Roboto Mono', monospace;
+        font-size: clamp(0.9rem, 2.5vw, 1.3rem);
+        color: #00cc00;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-align: center;
+        padding: 0 20px;
+      }
+      
+      .seeker-link a {
+        color: #00ff00;
+        text-decoration: none;
+        border-bottom: 1px solid #00ff00;
+        transition: all 0.3s ease;
+      }
+      
+      .seeker-link a:hover {
+        color: #ffffff;
+        text-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
+      }
+      
+      /* 404 Page */
+      .page-404 {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #000000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 1.5s ease-in-out;
+      }
+      
+      .page-404.visible {
+        opacity: 1;
+        visibility: visible;
+      }
+      
+      .error-404 {
+        font-family: 'Roboto Mono', monospace;
+        font-size: clamp(4rem, 15vw, 10rem);
+        color: #00ff00;
+        font-weight: 700;
+        letter-spacing: 10px;
+        text-shadow: 0 0 30px rgba(0, 255, 0, 0.4);
+        margin-bottom: 20px;
+      }
+      
+      .error-message {
+        font-family: 'Roboto Mono', monospace;
+        font-size: clamp(0.8rem, 2vw, 1.2rem);
+        color: #00cc00;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        text-align: center;
+        padding: 0 20px;
+      }
+      
+      .glitch-line {
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        background: rgba(0, 255, 0, 0.3);
+        animation: glitch-scan 3s linear infinite;
+      }
+      
+      @keyframes glitch-scan {
+        0% { top: -2px; opacity: 0; }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% { top: 100%; opacity: 0; }
+      }
+      
+      /* Page fade out */
+      .seizure-container.fade-out {
+        opacity: 0;
+        transition: opacity 2s ease-out;
+      }
+      
+      body.blacked-out {
+        background: #000000;
+      }
+      
       /* Responsive */
       @media (max-width: 768px) {
         .seizure-container {
@@ -551,5 +682,57 @@
         </p>
       </div>
     </div>
+    
+    <!-- S33K3R Overlay (hidden initially) -->
+    <div id="seekerOverlay" class="seeker-overlay">
+      <h2 class="seeker-title">THE S33K3R TRANSMISSION COMING SOON</h2>
+      <p class="seeker-link">GO TO <a href="https://www.thes33k3r.com" target="_blank" rel="noopener">WWW.THES33K3R.COM</a> TO GET THE DATE</p>
+    </div>
+    
+    <!-- 404 Page (hidden initially) -->
+    <div id="page404" class="page-404">
+      <div class="glitch-line"></div>
+      <div class="error-404">404</div>
+      <p class="error-message">Intercepted by THE S33K3R</p>
+    </div>
+    
+    <script>
+      // Timeline: 
+      // 0s - Page loads normally
+      // 11s - S33K3R overlay fades in (5 second fade)
+      // 16s - Overlay fully visible
+      // 46s - Message fades out (30 seconds after fully visible)
+      // 48s - Page fades out
+      // 50s - 404 page appears
+      
+      document.addEventListener('DOMContentLoaded', function() {
+        const seizureContainer = document.querySelector('.seizure-container');
+        const seekerOverlay = document.getElementById('seekerOverlay');
+        const page404 = document.getElementById('page404');
+        
+        // After 11 seconds, show S33K3R overlay (5s fade in via CSS)
+        setTimeout(function() {
+          seekerOverlay.classList.add('visible');
+        }, 11000);
+        
+        // After 46 seconds (11 + 5 fade + 30 visible), fade out the overlay
+        setTimeout(function() {
+          seekerOverlay.classList.add('fade-out');
+        }, 46000);
+        
+        // After 48 seconds, fade out the seizure page
+        setTimeout(function() {
+          seizureContainer.classList.add('fade-out');
+        }, 48000);
+        
+        // After 50 seconds, show 404 page and black out body
+        setTimeout(function() {
+          document.body.classList.add('blacked-out');
+          seekerOverlay.style.display = 'none';
+          seizureContainer.style.display = 'none';
+          page404.classList.add('visible');
+        }, 50000);
+      });
+    </script>
   </body>
 </html>
